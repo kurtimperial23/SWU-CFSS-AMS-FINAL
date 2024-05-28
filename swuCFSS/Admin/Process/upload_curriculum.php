@@ -17,130 +17,51 @@ if ($_SESSION["user_role"] != "admin") {
     exit();
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['curriculumFile'])) {
-    $file = $_FILES['curriculumFile'];
-
-    // Check for upload errors
-    if ($file['error'] == 0) {
-        $filename = $file['name'];
-        $fileTmpName = $file['tmp_name'];
-        $fileSize = $file['size'];
-        $fileType = $file['type'];
-        $fileExt = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-
-        $allowedExt = ['csv'];
-
-        if (in_array($fileExt, $allowedExt)) {
-            // Define the absolute path for the upload directory
-            $uploadDir = realpath(__DIR__ . '/../uploads') . '/';
-
-            // Check if the directory exists, if not create it
-            if (!is_dir($uploadDir)) {
-                mkdir($uploadDir, 0755, true);
-            }
-
-            $newFilename = uniqid('', true) . "." . $fileExt;
-            $fileDestination = $uploadDir . $newFilename;
-
-            if (move_uploaded_file($fileTmpName, $fileDestination)) {
-                // Process the CSV file
-                if (($handle = fopen($fileDestination, 'r')) !== FALSE) {
-                    $headers = fgetcsv($handle, 1000, ",");
-
-                    // Define the columns we are interested in
-                    $requiredColumns = [
-                        'Department',
-                        'Program',
-                        'Year level',
-                        'Term',
-                        'Service college',
-                        'Subject code',
-                        'Subject description',
-                        'Units lec',
-                        'Units lab',
-                        'Total units',
-                        'Total hours',
-                        'CS lec',
-                        'CS lab',
-                        'Projected students',
-                        'Lec section',
-                        'Lab section',
-                        'Lec hours',
-                        'Lab hours',
-                        'Total',
-                        'Lecture',
-                        'Labs'
-                    ];
-
-                    // Get the indices of the required columns
-                    $indices = [];
-                    foreach ($requiredColumns as $col) {
-                        $index = array_search($col, $headers);
-                        if ($index !== false) {
-                            $indices[$col] = $index;
-                        }
-                    }
-
-                    $filteredData = [];
-                    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-                        $filteredRow = [];
-                        foreach ($indices as $key => $index) {
-                            $filteredRow[$key] = $data[$index];
-                        }
-                        $filteredData[] = $filteredRow;
-                    }
-                    fclose($handle);
-
-                    foreach ($filteredData as $row) {
-                        // Replace empty or null values with empty strings
-                        foreach ($row as &$value) {
-                            if ($value === null || $value === '') {
-                                $value = ''; // Replace empty or null value with an empty string
-                            }
-                        }
-
-                        // Example: Insert into the database
-                        $query = "INSERT INTO tbl_curriculum (department, program, year_level, term, service_college, subject_code, subject_description, units_lec, units_lab, total_units, total_hours, cs_lec, cs_lab, projected_students, lec_section, lab_section, lec_hours, lab_hours, total, lecture, labs) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                        $stmt = $conn->prepare($query);
-                        $stmt->bind_param(
-                            "sssssssssssssssssssss",
-                            $row['Department'],
-                            $row['Program'],
-                            $row['Year level'],
-                            $row['Term'],
-                            $row['Service college'],
-                            $row['Subject code'],
-                            $row['Subject description'],
-                            $row['Units lec'],
-                            $row['Units lab'],
-                            $row['Total units'],
-                            $row['Total hours'],
-                            $row['CS lec'],
-                            $row['CS lab'],
-                            $row['Projected students'],
-                            $row['Lec section'],
-                            $row['Lab section'],
-                            $row['Lec hours'],
-                            $row['Lab hours'],
-                            $row['Total'],
-                            $row['Lecture'],
-                            $row['Labs']
-                        );
-                        $stmt->execute();
-                    }
-
-
-
-                    header("Location: curriculum_page.php?uploadsuccess");
-                }
-            } else {
-                echo "Error moving the uploaded file.";
-            }
-        } else {
-            echo "Invalid file type. Only CSV files are allowed.";
+// Check if the form was submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Reconnect to the database if the connection is not alive
+    if (!mysqli_ping($conn)) {
+        mysqli_close($conn);
+        if (!$conn) {
+            die("Connection failed: " . mysqli_connect_error());
         }
+    }
+    
+    // Check if a file was uploaded without errors
+    if (isset($_FILES["curriculumFile"]) && $_FILES["curriculumFile"]["error"] == 0) {
+        $file = $_FILES["curriculumFile"]["tmp_name"];
+        $handle = fopen($file, "r");
+
+        // Prepare the INSERT statement
+        $sql = "INSERT INTO tbl_curriculum (department, program, year_level, term, service_college, subject_code, subject_description, units_lec, units_lab, total_units, total_hours, cs_lec, cs_lab, projected_students, lec_section, lab_section, lec_hours, lab_hours, total, lecture, labs) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = mysqli_prepare($conn, $sql);
+
+        // Bind parameters to the statement
+        mysqli_stmt_bind_param($stmt, "sssssssssssssssssssss", $department, $program, $year_level, $term, $service_college, $subject_code, $subject_description, $units_lec, $units_lab, $total_units, $total_hours, $cs_lec, $cs_lab, $projected_students, $lec_section, $lab_section, $lec_hours, $lab_hours, $total, $lecture, $labs);
+
+        // Loop through the file line by line
+        while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+            // Assign CSV data to variables
+            list($department, $program, $year_level, $term, $service_college, $subject_code, $subject_description, $units_lec, $units_lab, $total_units, $total_hours, $cs_lec, $cs_lab, $projected_students, $lec_section, $lab_section, $lec_hours, $lab_hours, $total, $lecture, $labs) = $data;
+
+            // Execute the prepared statement
+            if (mysqli_stmt_execute($stmt)) {
+                echo "Data inserted successfully.<br>";
+            } else {
+                echo "Error inserting data: " . mysqli_error($conn) . "<br>";
+            }
+        }
+
+        // Close statement
+        mysqli_stmt_close($stmt);
+
+        fclose($handle);
     } else {
-        echo "Error uploading the file.";
+        // Handle file upload error
+        echo "Error uploading file.<br>";
     }
 }
+
+// Close database connection
+mysqli_close($conn);
 ?>
