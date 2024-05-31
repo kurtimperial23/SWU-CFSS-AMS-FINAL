@@ -2,7 +2,7 @@
 session_start();
 
 // Include the file containing the database connection code
-include "db_connection.php";
+include "./db_connection.php";
 
 // Get the username from the form
 $username = $_POST["txtusername"];
@@ -62,12 +62,12 @@ if ($stmt) {
             exit();
         } else {
             // Password is incorrect
-            header("Location: ../index.php?error=invalid_credentials");
+            header("Location: ../../index.php?error=invalid_credentials");
             exit();
         }
     } else {
         // No matching username found
-        header("Location: ../index.php?error=invalid_credentials");
+        header("Location: ../../index.php?error=invalid_credentials");
         exit();
     }
 } else {
