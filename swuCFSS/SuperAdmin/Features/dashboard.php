@@ -74,7 +74,7 @@ if ($_SESSION["user_role"] != "superAdmin") {
     form input[type="submit"] {
         width: auto;
         padding: 10px 20px;
-        background-color: #4CAF50;
+        background-color: #0d6efd;
         color: #fff;
         border: none;
         border-radius: 4px;
@@ -107,14 +107,14 @@ if ($_SESSION["user_role"] != "superAdmin") {
                     </li>
                     <li class="sidebar-item">
                         <a href="../Features/dashboard.php" class="sidebar-link <?php if ($current_page == 'dashboard.php')
-                                echo 'active'; ?>">
+                            echo 'active'; ?>">
                             <i class="fa-solid fa-list pe-2"></i>
                             Dashboard
                         </a>
                     </li>
                     <li class="sidebar-item">
                         <a href="../Features/admin_manager.php" class="sidebar-link <?php if ($current_page == 'admin_manager.php')
-                                echo 'active'; ?>">
+                            echo 'active'; ?>">
                             <i class="fa-solid fa-user-pen pe-2"></i>
                             Manage Admins
                         </a>

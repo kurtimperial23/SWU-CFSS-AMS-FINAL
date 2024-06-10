@@ -117,7 +117,7 @@ ini_set('display_errors', 1);
                                 Are you sure you want to delete this admin?
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
                                 <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
                             </div>
                         </div>
@@ -131,8 +131,6 @@ ini_set('display_errors', 1);
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="editAdminModalLabel">Edit Admin</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <form id="editAdminForm" method="post" action="../Process/edit_admin.php">
@@ -168,7 +166,7 @@ ini_set('display_errors', 1);
                                 </form>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
                                 <!-- Remove the 'submit' attribute from the button and add an onclick event to trigger form submission -->
                                 <button type="button" class="btn btn-primary" onclick="saveChangesBtn()"
                                     id="saveChangesBtn">Save Changes</button>
@@ -193,7 +191,7 @@ ini_set('display_errors', 1);
                                     <th>Role</th>
                                     <th>Contact Number</th>
                                     <th>Status</th>
-                                    <th>Options</th>
+                                    <th class="text-center">Options</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -211,8 +209,8 @@ ini_set('display_errors', 1);
                                     echo "</select>";
                                     echo "</td>";
                                     echo "<td class='text-center'>";
-                                    echo "<a href='#' class='delete-btn' data-username='" . $row['username'] . "'><i class='fa-solid fa-trash'></i></a> | ";
-                                    echo "<a href='#' class='edit-btn' data-userid='" . $row['id'] . "'><i class='fa-solid fa-pen-to-square'></i></a>";
+                                    echo "<a href='#' class='btn btn-danger btn-sm delete-btn' data-username='" . $row['username'] . "'><i class='fa-solid fa-trash'></i></a> ";
+                                    echo "<a href='#' class='btn btn-primary btn-sm edit-btn' data-userid='" . $row['id'] . "'><i class='fa-solid fa-pen-to-square'></i></a>";
                                     echo "</td>";
                                     echo "</tr>";
                                 }
@@ -226,64 +224,64 @@ ini_set('display_errors', 1);
         </div>
 </body>
 <script>
-    $(document).ready(function () {
-        $('.delete-btn').click(function () {
-            var username = $(this).data('username');
-            $('#confirmDeleteModal').modal('show');
-            $('#confirmDelete').click(function () {
-                $.ajax({
-                    url: '../Process/delete_admin.php',
-                    type: 'post',
-                    data: {
-                        username: username
-                    }, // Send username instead of id
-                    success: function (response) {
-                        window.location
-                            .reload(); // Reload the page after successful deletion
-                    }
-                });
-            });
-        });
-
-        // Function to handle edit button click
-        $('.edit-btn').click(function () {
-            var adminId = $(this).data('userid');
-            // Fetch admin details via AJAX and populate the modal fields
+$(document).ready(function() {
+    $('.delete-btn').click(function() {
+        var username = $(this).data('username');
+        $('#confirmDeleteModal').modal('show');
+        $('#confirmDelete').click(function() {
             $.ajax({
-                url: '../Process/fetch_admin.php',
+                url: '../Process/delete_admin.php',
                 type: 'post',
                 data: {
-                    adminId: adminId
-                },
-                success: function (response) {
-                    var admin = JSON.parse(response);
-                    $('#adminId').val(admin.id);
-                    $('#editfirstname').val(admin.first_name);
-                    $('#editlastname').val(admin.last_name);
-                    $('#editusername').val(admin.username);
-                    $('#editcontactNumber').val(admin.contact_number);
-                    $('#editAdminModal').modal('show');
+                    username: username
+                }, // Send username instead of id
+                success: function(response) {
+                    window.location
+                        .reload(); // Reload the page after successful deletion
                 }
             });
         });
-
-        // Function to handle save changes button click
-        $('#saveChangesBtn').click(function () {
-            // Serialize form data
-            var formData = $('#editAdminForm').serialize();
-            // Submit form data via AJAX
-            $.ajax({
-                url: '../Process/edit_admin.php',
-                type: 'post',
-                data: formData,
-                success: function (response) {
-                    // Reload the page after successful update
-                    window.location.reload();
-                }
-            });
-        });
-
     });
+
+    // Function to handle edit button click
+    $('.edit-btn').click(function() {
+        var adminId = $(this).data('userid');
+        // Fetch admin details via AJAX and populate the modal fields
+        $.ajax({
+            url: '../Process/fetch_admin.php',
+            type: 'post',
+            data: {
+                adminId: adminId
+            },
+            success: function(response) {
+                var admin = JSON.parse(response);
+                $('#adminId').val(admin.id);
+                $('#editfirstname').val(admin.first_name);
+                $('#editlastname').val(admin.last_name);
+                $('#editusername').val(admin.username);
+                $('#editcontactNumber').val(admin.contact_number);
+                $('#editAdminModal').modal('show');
+            }
+        });
+    });
+
+    // Function to handle save changes button click
+    $('#saveChangesBtn').click(function() {
+        // Serialize form data
+        var formData = $('#editAdminForm').serialize();
+        // Submit form data via AJAX
+        $.ajax({
+            url: '../Process/edit_admin.php',
+            type: 'post',
+            data: formData,
+            success: function(response) {
+                // Reload the page after successful update
+                window.location.reload();
+            }
+        });
+    });
+
+});
 </script>
 
 </html>
