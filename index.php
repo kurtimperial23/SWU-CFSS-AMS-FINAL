@@ -17,15 +17,15 @@
 </head>
 
 <body>
-    <section class="loginpage">
-        <div class="container">
+    <section class="loginpage d-flex justify-content-center align-items-start vh-100">
+        <div class="container align-items-center">
             <div>
                 <img src="./swuCFSS/Resources/swubg.jpg" class="img-fluid loginbg" />
                 <div class="black-film"></div>
             </div>
 
             <div class="row d-flex justify-content-center text-align-center login">
-                <div class="col-4">
+                <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4 frame">
                     <div class="login-frame">
                         <form action="./swuCFSS/Process/login_process.php" method="post" class="needs-validation"
                             novalidate>
@@ -45,7 +45,8 @@
                                     <div class="input-group">
                                         <input type="password" name="txtpassword" id="pass" class="form-control"
                                             placeholder="Password" required />
-                                        <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                        <button class="btn btn-outline-secondary btn-custom-danger me-1" type="button"
+                                            id="togglePassword">
                                             <i class="fas fa-eye-slash"></i>
                                         </button>
                                     </div>
@@ -70,10 +71,10 @@
                     </div>
                 </div>
             </div>
-            <span>© Southwestern University PHINMA 2024. All Rights Reserved | Design
-                by: Kurt Hydein P. Imperial
-            </span>
         </div>
+        <span class="text-center">© Southwestern University PHINMA 2024. All Rights Reserved | Design
+            by: Kurt Hydein P. Imperial
+        </span>
     </section>
 
     <script>

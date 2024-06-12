@@ -6,14 +6,12 @@ session_start();
 
 // check if user is logged in
 if (!isset($_SESSION["username"])) {
-    // Redirect back to the login page with an error message
     header("Location: ../../index.php");
     exit();
 }
 
 // check if user has access to this page
 if ($_SESSION["user_role"] != "admin") {
-    // Redirect back to the login page with an error message
     header("Location: ../../Process/authorization_error.php");
     exit();
 }
@@ -26,17 +24,10 @@ $sql = "SELECT * FROM tbl_schoolyear";
 $result = $conn->query($sql);
 
 // Function to format date strings
-function formatDate($dateString)
-{
-    // Convert date string to timestamp
+function formatDate($dateString) {
     $timestamp = strtotime($dateString);
-
-    // Format the timestamp in a human-readable format
-    $formattedDate = date("M d, Y", $timestamp); // Example format: Jan 01, 2023
-
-    return $formattedDate;
+    return date("M d, Y", $timestamp);
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,18 +36,16 @@ function formatDate($dateString)
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SHS Faculty</title>
-
     <link rel="stylesheet" href="../../Styles/styles.css">
 </head>
 
 <body>
-
     <div class="wrapper">
         <?php include ('../includes/sidebar.php'); ?>
         <div class="main">
             <nav class="navbar custom-toggler navbar-expand px-3 border-bottom">
                 <button class="btn" id="sidebar-toggle" type="button">
-                    <span class="navbar-toggler-icon "></span>
+                    <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse navbar p-0 d-flex justify-content-end align-items-center">
                     <span>Welcome back <b>Kurt</b>!</span>
@@ -67,7 +56,6 @@ function formatDate($dateString)
             <main class="content px-3 py-4">
                 <div class="container-fluid">
                     <?php include '../../Admin/includes/dashboardBanner.php'; ?>
-                    <!-- SAME ROW OF DASHBOARD BANNER BUT LIKE I JUST PUT IT HERE KAY FOR EVERY PAGE LAHE LAHE -->
                     <div class="col-12 col-md-2 d-flex">
                         <div class="card flex-fill border-0">
                             <div class="card-body d-flex justify-content-center align-items-center">
@@ -78,7 +66,6 @@ function formatDate($dateString)
                     </div>
                 </div>
 
-                <!-- Modal -->
                 <div class="modal fade" id="addSchoolYear" tabindex="-1" role="dialog"
                     aria-labelledby="addSchoolYearTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -147,35 +134,34 @@ function formatDate($dateString)
                         </div>
                     </div>
                 </div>
+
                 <?php include ('../modals/logoutModal.php'); ?>
+
                 <?php
-                // Display alerts based on URL parameter
                 if (isset($_GET['alert'])) {
                     $alert = $_GET['alert'];
                     if ($alert === 'success') {
                         echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Success!</strong> Schoolyear added successfully.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>';
+                            <strong>Success!</strong> Schoolyear added successfully.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>';
                     } elseif ($alert === 'failure') {
                         echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Error!</strong> Error occurred while adding Schoolyear.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>';
+                            <strong>Error!</strong> Error occurred while adding Schoolyear.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>';
                     } elseif ($alert === 'duplicate') {
                         echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Error!</strong> Username already exists. Choose another one.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>';
+                            <strong>Error!</strong> Username already exists. Choose another one.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>';
                     }
                 }
                 ?>
 
                 <div class="card border-0">
                     <div class="card-header">
-                        <h5 class="card-title m-0">
-                            Schoolyears
-                        </h5>
+                        <h5 class="card-title m-0">Schoolyears</h5>
                     </div>
                     <div class="card-body">
                         <table id="myTable" class="table table-hover" style="width:100%">
@@ -191,10 +177,9 @@ function formatDate($dateString)
                             </thead>
                             <tbody>
                                 <?php
-                                // Check if there are any school years
                                 if ($result->num_rows > 0) {
-                                    // Output data of each row
                                     while ($row = mysqli_fetch_assoc($result)) {
+                                        print_r($row);
                                         echo "<tr>";
                                         echo "<td>" . $row['id'] . "</td>";
                                         echo "<td>" . $row['schoolyear_name'] . "</td>";
@@ -204,9 +189,6 @@ function formatDate($dateString)
                                         echo "<td class='text-center'><a class='fa-solid fa-trash'></a> | <a class='fa-solid fa-pen-to-square'></a></td>";
                                         echo "</tr>";
                                     }
-                                } else {
-                                    // If no records found
-                                    echo "<tr><td colspan='6' class='text-center'>No schoolyears found.</td></tr>";
                                 }
                                 ?>
                             </tbody>
@@ -219,5 +201,4 @@ function formatDate($dateString)
     </div>
 </body>
 <script src="../../Scripts/script.js"></script>
-
-</html>
+<script
