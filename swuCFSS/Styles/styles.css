@@ -513,46 +513,26 @@ table th {
   z-index: 99;
 }
 
-/* No media query for `xs` as this is the default in Bootstrap */
 /* Extra Small devices (small phones, 576px and below) */
 @media (max-width: 575.98px) {
-  /* .login-frame {
-    background-color: transparent;
-    box-shadow: none;
-  } */
 }
 
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) {
-  .your-class {
-    /* Styles for small devices and up */
-  }
 }
 
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) {
-  .your-class {
-    /* Styles for medium devices and up */
-  }
 }
 
 /* Large devices (desktops, 992px and up) */
 @media (min-width: 992px) {
-  .your-class {
-    /* Styles for large devices and up */
-  }
 }
 
 /* Extra large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
-  .your-class {
-    /* Styles for extra large devices and up */
-  }
 }
 
 /* Extra extra large devices (larger desktops, 1400px and up) */
 @media (min-width: 1400px) {
-  .your-class {
-    /* Styles for extra extra large devices and up */
-  }
 }

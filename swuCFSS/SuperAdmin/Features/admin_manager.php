@@ -8,7 +8,7 @@ session_start();
 // check if user is logged in
 if (!isset($_SESSION["username"])) {
     // Redirect back to the login page with an error message
-    header("Location: ../../index.php");
+    header("Location: ../../../index.php");
     exit();
 }
 
@@ -26,7 +26,7 @@ ini_set('display_errors', 1);
 include "../../Process/db_connection.php";
 
 // Fetch all admins from the database using prepared statement
-$stmt = $conn->prepare("SELECT first_name, id, last_name, role, contact_number, username FROM tbl_users WHERE role = ?");
+$stmt = $conn->prepare("SELECT first_name, id, last_name, role, contact_number, email, username FROM tbl_users WHERE role = ?");
 $role = "admin";
 $stmt->bind_param("s", $role);
 $stmt->execute();
@@ -157,6 +157,13 @@ ini_set('display_errors', 1);
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-6">
+                                            <label for="email" class="form-label">Email</label>
+                                            <input type="email" class="form-control" id="editemail" name="email"
+                                                placeholder="e.g. kurthydeinimperial@gmail.com" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
                                             <label for="contactNumber" class="form-label">Contact Number</label>
                                             <input type="number" class="form-control" id="editcontactNumber"
                                                 name="contactNumber" maxlength="11" placeholder="e.g. 09683171436"
@@ -188,6 +195,7 @@ ini_set('display_errors', 1);
                                 <tr>
                                     <th>Username</th>
                                     <th>Fullname</th>
+                                    <th>Email</th>
                                     <th>Role</th>
                                     <th>Contact Number</th>
                                     <th>Status</th>
@@ -200,6 +208,7 @@ ini_set('display_errors', 1);
                                     echo "<tr class='align-middle'>";
                                     echo "<td>" . $row['username'] . "</td>";
                                     echo "<td>" . $row['first_name'] . " " . $row['last_name'] . "</td>";
+                                    echo "<td>" . $row['email'] . "</td>";
                                     echo "<td>" . $row['role'] . "</td>";
                                     echo "<td>" . $row['contact_number'] . "</td>";
                                     echo "<td>";
@@ -260,6 +269,7 @@ $(document).ready(function() {
                 $('#editlastname').val(admin.last_name);
                 $('#editusername').val(admin.username);
                 $('#editcontactNumber').val(admin.contact_number);
+                $('#editemail').val(admin.email);
                 $('#editAdminModal').modal('show');
             }
         });

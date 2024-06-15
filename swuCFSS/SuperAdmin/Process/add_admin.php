@@ -6,11 +6,11 @@ session_start();
 include "../../Process/db_connection.php";
 
 // Get values from text fields and sanitize to avoid SQL injection attacks
-$firstname = filter_var($_POST["firstname"], FILTER_SANITIZE_STRING);
-$lastname = filter_var($_POST["lastname"], FILTER_SANITIZE_STRING);
-$username = filter_var($_POST["username"], FILTER_SANITIZE_STRING);
+$firstname = filter_var($_POST["firstname"]);
+$lastname = filter_var($_POST["lastname"]);
+$username = filter_var($_POST["username"]);
 $password = isset($_POST["password"]) ? $_POST["password"] : "swuphinmashsadmin"; // Default password if not provided
-$contactnumber = filter_var($_POST["contactNumber"], FILTER_SANITIZE_STRING);
+$contactnumber = filter_var($_POST["contactNumber"]);
 
 // Check if username already exists
 $stmt_check = $conn->prepare("SELECT username FROM tbl_users WHERE username = ?");
@@ -35,7 +35,7 @@ $role = "admin";
 $status = 1;
 
 // Prepare and bind the SQL statement
-$stmt = $conn->prepare("INSERT INTO tbl_users (first_name, last_name, username, password, contact_number, role, status) VALUES (?, ?, ?, ?, ?, ?, ?)");
+$stmt = $conn->prepare("INSERT INTO tbl_users (first_name, last_name, username, email, password, contact_number, role, status) VALUES (?, ?, ?, ?, ?, ?, ?)");
 $stmt->bind_param("ssssssi", $firstname, $lastname, $username, $hashed_password, $contactnumber, $role, $status);
 
 // Execute the statement
@@ -49,11 +49,3 @@ if ($stmt->execute()) {
     header("Location: ../Features/dashboard.php?alert=failure");
     exit();
 }
-
-// Close statements
-$stmt->close();
-$stmt_check->close();
-
-// Close database connection
-$conn->close();
-?>
