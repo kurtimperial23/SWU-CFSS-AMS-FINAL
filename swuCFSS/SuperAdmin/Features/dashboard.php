@@ -6,7 +6,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 session_start();
 
 // Check if user is logged in
-if (!isset($_SESSION["username"])) {
+if (!isset($_SESSION["email"])) {
     // Redirect back to the login page with an error message
     header("Location: ../../../index.php");
     exit();
@@ -181,12 +181,6 @@ if ($_SESSION["user_role"] != "superAdmin") {
                                 <div>
                                     <label for="contact">Last Name</label>
                                     <input type="text" name="lastname" required>
-                                </div>
-                            </div>
-                            <div class="input-row">
-                                <div>
-                                    <label for="username">Username</label>
-                                    <input type="text" name="username" placeholder="e.g. arbiter2567" required>
                                 </div>
                             </div>
                             <div class="input-row">

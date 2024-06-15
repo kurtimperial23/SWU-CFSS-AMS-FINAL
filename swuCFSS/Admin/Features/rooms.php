@@ -5,7 +5,7 @@ require_once ('../Process/rooms_crud.php'); // Include the CRUD functions
 
 session_start();
 
-if (!isset($_SESSION["username"])) {
+if (!isset($_SESSION["email"])) {
     header("Location: ../../index.php");
     exit();
 }
@@ -257,53 +257,53 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </body>
 <script src="../../Scripts/script.js"></script>
 <script>
-    function confirmDelete(roomId) {
-        document.getElementById('deleteRoomId').value = roomId;
-        $('#deleteConfirmationModal').modal('show');
-    }
+function confirmDelete(roomId) {
+    document.getElementById('deleteRoomId').value = roomId;
+    $('#deleteConfirmationModal').modal('show');
+}
 
-    const roomName = document.getElementById('editRoomName' + roomId).value;
-    const roomCode = document.getElementById('editRoomCode' + roomId).value;
+const roomName = document.getElementById('editRoomName' + roomId).value;
+const roomCode = document.getElementById('editRoomCode' + roomId).value;
 
 
-    // Add event listener for edit room form submission
-    document.addEventListener('DOMContentLoaded', function () {
-        const editRoomForms = document.querySelectorAll('.edit-room-submit');
-        editRoomForms.forEach(form => {
-            form.addEventListener('click', function (event) {
-                event.preventDefault();
-                const roomId = form.getAttribute('data-room-id');
-                const roomName = document.getElementById('editRoomName' + roomId).value;
-                const roomCode = document.getElementById('editRoomCode' + roomId).value;
-                const formData = new FormData();
-                formData.append('editRoomSubmit', true);
-                formData.append('roomId', roomId);
-                formData.append('roomName', roomName);
-                formData.append('roomCode', roomCode);
-                fetch('<?php echo $_SERVER['PHP_SELF']; ?>', {
+// Add event listener for edit room form submission
+document.addEventListener('DOMContentLoaded', function() {
+    const editRoomForms = document.querySelectorAll('.edit-room-submit');
+    editRoomForms.forEach(form => {
+        form.addEventListener('click', function(event) {
+            event.preventDefault();
+            const roomId = form.getAttribute('data-room-id');
+            const roomName = document.getElementById('editRoomName' + roomId).value;
+            const roomCode = document.getElementById('editRoomCode' + roomId).value;
+            const formData = new FormData();
+            formData.append('editRoomSubmit', true);
+            formData.append('roomId', roomId);
+            formData.append('roomName', roomName);
+            formData.append('roomCode', roomCode);
+            fetch('<?php echo $_SERVER['PHP_SELF']; ?>', {
                     method: 'POST',
                     body: formData
                 })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.success) {
-                            window.location.href =
-                                '<?php echo $_SERVER['PHP_SELF']; ?>?alert=edit_success';
-                        } else {
-                            console.error('Error editing room');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                    });
-            });
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.success) {
+                        window.location.href =
+                            '<?php echo $_SERVER['PHP_SELF']; ?>?alert=edit_success';
+                    } else {
+                        console.error('Error editing room');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
         });
     });
+});
 </script>
 
 </html>

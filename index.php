@@ -38,8 +38,8 @@
                                     <h3>Login to your account</h3>
                                 </div>
                                 <div class="col">
-                                    <input type="text" name="txtusername" id="name" class="form-control"
-                                        placeholder="Username" required />
+                                    <input type="email" name="txtemail" id="email" class="form-control"
+                                        placeholder="Email" required />
                                 </div>
                                 <div class="col">
                                     <div class="input-group">

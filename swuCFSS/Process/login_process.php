@@ -5,18 +5,18 @@ session_start();
 include "./db_connection.php";
 
 // Get the username from the form
-$username = $_POST["txtusername"];
+$email = $_POST["txtemail"];
 $password = $_POST["txtpassword"];
 
 // Prepare a SQL statement to retrieve the user's information by username
-$sql = "SELECT * FROM tbl_users WHERE username = ?";
+$sql = "SELECT * FROM tbl_users WHERE email = ?";
 
 // Prepare the SQL statement
 $stmt = mysqli_prepare($conn, $sql);
 
 if ($stmt) {
     // Bind parameters to the prepared statement
-    mysqli_stmt_bind_param($stmt, "s", $username);
+    mysqli_stmt_bind_param($stmt, "s", $email);
 
     // Execute the prepared statement
     mysqli_stmt_execute($stmt);
@@ -37,7 +37,7 @@ if ($stmt) {
 
             // Store user role and username in session variables
             $_SESSION['user_role'] = $user_role;
-            $_SESSION['username'] = $username;
+            $_SESSION['email'] = $email;
             $_SESSION['id'] = $id;
 
             // Redirect the user based on their role
@@ -74,8 +74,3 @@ if ($stmt) {
     // Error handling if the prepared statement fails
     die("Error in query: " . mysqli_error($conn));
 }
-
-// Close the statement and connection
-// mysqli_stmt_close($stmt);
-// mysqli_close($conn);
-?>

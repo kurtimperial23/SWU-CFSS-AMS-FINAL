@@ -4,7 +4,7 @@ require_once ('../../Process/db_connection.php'); // Include your database conne
 session_start();
 
 // Check if user is logged in
-if (!isset($_SESSION["username"])) {
+if (!isset($_SESSION["email"])) {
     // Redirect back to the login page with an error message
     header("Location: ../../index.php");
     exit();

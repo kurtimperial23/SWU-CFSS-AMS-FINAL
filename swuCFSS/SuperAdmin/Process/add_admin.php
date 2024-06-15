@@ -12,7 +12,6 @@ use PHPMailer\PHPMailer\Exception;
 // Get values from text fields and sanitize to avoid SQL injection attacks
 $firstname = htmlspecialchars($_POST["firstname"], ENT_QUOTES, 'UTF-8');
 $lastname = htmlspecialchars($_POST["lastname"], ENT_QUOTES, 'UTF-8');
-$username = htmlspecialchars($_POST["username"], ENT_QUOTES, 'UTF-8');
 $email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
 $contactnumber = htmlspecialchars($_POST["contactNumber"], ENT_QUOTES, 'UTF-8');
 
@@ -20,14 +19,14 @@ $contactnumber = htmlspecialchars($_POST["contactNumber"], ENT_QUOTES, 'UTF-8');
 $password = isset($_POST["password"]) ? $_POST["password"] : bin2hex(random_bytes(4));
 
 // Check if username already exists
-$stmt_check = $conn->prepare("SELECT username FROM tbl_users WHERE username = ?");
-$stmt_check->bind_param("s", $username);
+$stmt_check = $conn->prepare("SELECT email FROM tbl_users WHERE email = ?");
+$stmt_check->bind_param("s", $email);
 $stmt_check->execute();
 $stmt_check->store_result();
 
 if ($stmt_check->num_rows > 0) {
     // Username already exists, alert failure
-    $_SESSION["error_message"] = "Username already exists.";
+    $_SESSION["error_message"] = "Email already exists.";
     header("Location: ../Features/dashboard.php?alert=duplicate");
     exit();
 }
@@ -42,8 +41,8 @@ $role = "admin";
 $status = 1;
 
 // Prepare and bind the SQL statement
-$stmt = $conn->prepare("INSERT INTO tbl_users (first_name, last_name, username, email, password, contact_number, role, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-$stmt->bind_param("sssssssi", $firstname, $lastname, $username, $email, $hashed_password, $contactnumber, $role, $status);
+$stmt = $conn->prepare("INSERT INTO tbl_users (first_name, last_name, email, password, contact_number, role, status) VALUES (?, ?, ?, ?, ?, ?, ?)");
+$stmt->bind_param("ssssssi", $firstname, $lastname, $email, $hashed_password, $contactnumber, $role, $status);
 
 
 if ($stmt->execute()) {
@@ -68,7 +67,7 @@ if ($stmt->execute()) {
         $mail->Subject = 'Admin Account Created';
         $mail->Body    = "<p>Dear $firstname $lastname,</p>
                           <p>Your admin account has been created successfully. Here are your credentials:</p>
-                          <p><b>Username:</b> $username</p>
+                          <p><b>Username:</b> $email</p>
                           <p><b>Password:</b> $password</p>
                           <p>Please change your password after logging in for the first time.</p>";
         $mail->send();

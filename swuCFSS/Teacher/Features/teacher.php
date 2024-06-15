@@ -7,7 +7,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 session_start();
 
 // check if user is logged in
-if (!isset($_SESSION["username"])) {
+if (!isset($_SESSION["email"])) {
     // Redirect back to the login page with an error message
     header("Location: ../../index.php");
     exit();

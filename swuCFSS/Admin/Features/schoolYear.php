@@ -5,7 +5,7 @@ require_once ('../../includes/cdn.php');
 session_start();
 
 // check if user is logged in
-if (!isset($_SESSION["username"])) {
+if (!isset($_SESSION["email"])) {
     header("Location: ../../index.php");
     exit();
 }

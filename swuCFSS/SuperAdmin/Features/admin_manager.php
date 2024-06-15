@@ -6,7 +6,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 session_start();
 
 // check if user is logged in
-if (!isset($_SESSION["username"])) {
+if (!isset($_SESSION["email"])) {
     // Redirect back to the login page with an error message
     header("Location: ../../../index.php");
     exit();
@@ -146,13 +146,6 @@ ini_set('display_errors', 1);
                                             <label for="editlastname" class="form-label">Last Name</label>
                                             <input type="text" class="form-control" id="editlastname" name="lastname"
                                                 required>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="editusername" class="form-label">Username</label>
-                                            <input type="text" class="form-control" id="editusername" name="username"
-                                                placeholder="e.g. arbiter2567" required>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
