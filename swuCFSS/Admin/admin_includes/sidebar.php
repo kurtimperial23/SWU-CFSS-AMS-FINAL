@@ -108,33 +108,38 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </ul>
         <ul class="sidebar-nav mt-auto">
             <li class="sidebar-item">
+                <a href="../Features/admin_profile.php" class="sidebar-link <?php if ($current_page == 'admin_profile.php')
+                            echo 'active'; ?>"><i class="fa-solid fa-user"></i>Profile</a>
+            </li>
+            <li class="sidebar-item">
                 <a href="#" class="sidebar-link" data-bs-toggle="modal" data-bs-target="#logoutModal">
                     <i class="fas fa-sign-out-alt"></i>
                     Logout
                 </a>
             </li>
+
         </ul>
     </div>
 </aside>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var sidebarItems = document.querySelectorAll('.sidebar-item');
+document.addEventListener("DOMContentLoaded", function() {
+    var sidebarItems = document.querySelectorAll('.sidebar-item');
 
-        sidebarItems.forEach(function (item) {
-            var collapseTrigger = item.querySelector('.sidebar-link[data-bs-toggle="collapse"]');
-            if (collapseTrigger) {
-                collapseTrigger.addEventListener('click', function () {
-                    var target = document.querySelector(this.getAttribute('data-bs-target'));
-                    if (!target.classList.contains('show')) {
-                        var openSections = document.querySelectorAll('.sidebar-dropdown.show');
-                        openSections.forEach(function (section) {
-                            if (section !== target) {
-                                section.classList.remove('show');
-                            }
-                        });
-                    }
-                });
-            }
-        });
+    sidebarItems.forEach(function(item) {
+        var collapseTrigger = item.querySelector('.sidebar-link[data-bs-toggle="collapse"]');
+        if (collapseTrigger) {
+            collapseTrigger.addEventListener('click', function() {
+                var target = document.querySelector(this.getAttribute('data-bs-target'));
+                if (!target.classList.contains('show')) {
+                    var openSections = document.querySelectorAll('.sidebar-dropdown.show');
+                    openSections.forEach(function(section) {
+                        if (section !== target) {
+                            section.classList.remove('show');
+                        }
+                    });
+                }
+            });
+        }
     });
+});
 </script>
