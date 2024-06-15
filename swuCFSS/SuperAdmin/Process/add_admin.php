@@ -4,13 +4,20 @@ session_start();
 
 // Include the file containing the database connection code
 include "../../Process/db_connection.php";
+require '../../../vendor/autoload.php';  // PHPMailer autoload
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 // Get values from text fields and sanitize to avoid SQL injection attacks
-$firstname = filter_var($_POST["firstname"]);
-$lastname = filter_var($_POST["lastname"]);
-$username = filter_var($_POST["username"]);
-$password = isset($_POST["password"]) ? $_POST["password"] : "swuphinmashsadmin"; // Default password if not provided
-$contactnumber = filter_var($_POST["contactNumber"]);
+$firstname = htmlspecialchars($_POST["firstname"], ENT_QUOTES, 'UTF-8');
+$lastname = htmlspecialchars($_POST["lastname"], ENT_QUOTES, 'UTF-8');
+$username = htmlspecialchars($_POST["username"], ENT_QUOTES, 'UTF-8');
+$email = filter_var($_POST["email"], FILTER_SANITIZE_EMAIL);
+$contactnumber = htmlspecialchars($_POST["contactNumber"], ENT_QUOTES, 'UTF-8');
+
+// Generate a random password if not provided
+$password = isset($_POST["password"]) ? $_POST["password"] : bin2hex(random_bytes(4));
 
 // Check if username already exists
 $stmt_check = $conn->prepare("SELECT username FROM tbl_users WHERE username = ?");
@@ -35,17 +42,44 @@ $role = "admin";
 $status = 1;
 
 // Prepare and bind the SQL statement
-$stmt = $conn->prepare("INSERT INTO tbl_users (first_name, last_name, username, email, password, contact_number, role, status) VALUES (?, ?, ?, ?, ?, ?, ?)");
-$stmt->bind_param("ssssssi", $firstname, $lastname, $username, $hashed_password, $contactnumber, $role, $status);
+$stmt = $conn->prepare("INSERT INTO tbl_users (first_name, last_name, username, email, password, contact_number, role, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+$stmt->bind_param("sssssssi", $firstname, $lastname, $username, $email, $hashed_password, $contactnumber, $role, $status);
 
-// Execute the statement
+
 if ($stmt->execute()) {
-    // Admin added successfully
-    header("Location: ../Features/dashboard.php?alert=success");
-    exit();
+    // Send email with PHPMailer
+    $mail = new PHPMailer(true);
+    try {
+        // Server settings
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'kupa.imperial.swu@phinmaed.com';  // Replace with your Gmail address
+        $mail->Password = 'hzxnfwwcsvjvyobs';  // Replace with your Gmail password or App Password
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+
+        // Recipients
+        $mail->setFrom('kupa.imperial.swu@phinmaed.com', 'Admin');
+        $mail->addAddress($email);
+
+        // Content
+        $mail->isHTML(true);
+        $mail->Subject = 'Admin Account Created';
+        $mail->Body    = "<p>Dear $firstname $lastname,</p>
+                          <p>Your admin account has been created successfully. Here are your credentials:</p>
+                          <p><b>Username:</b> $username</p>
+                          <p><b>Password:</b> $password</p>
+                          <p>Please change your password after logging in for the first time.</p>";
+        $mail->send();
+        header("Location: ../Features/admin_manager.php?alert=success");
+    } catch (Exception $e) {
+        error_log("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
+        header("Location: ../Features/admin_manager.php?alert=emailerror");
+    }
 } else {
-    // Error occurred
-    $_SESSION["error_message"] = "Error: " . $stmt->error;
-    header("Location: ../Features/dashboard.php?alert=failure");
-    exit();
+    header("Location: ../Features/admin_manager.php?alert=cantcommit");
 }
+
+$stmt->close();
+$conn->close();

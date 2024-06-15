@@ -191,6 +191,13 @@ if ($_SESSION["user_role"] != "superAdmin") {
                             </div>
                             <div class="input-row">
                                 <div>
+                                    <label for="email">Email</label>
+                                    <input type="email" name="email" placeholder="e.g. kurthydeinimperial@gmail.com"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="input-row">
+                                <div>
                                     <label for="username">Contact Number</label>
                                     <input type="number" name="contactNumber" maxlength="11"
                                         placeholder="e.g. 09683171436" required>

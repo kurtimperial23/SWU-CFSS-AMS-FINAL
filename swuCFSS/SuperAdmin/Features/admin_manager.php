@@ -138,33 +138,33 @@ ini_set('display_errors', 1);
                                     <input type="hidden" id="adminId" name="adminId">
                                     <div class="row mb-3">
                                         <div class="col-md-6">
-                                            <label for="firstname" class="form-label">First Name</label>
+                                            <label for="editfirstname" class="form-label">First Name</label>
                                             <input type="text" class="form-control" id="editfirstname" name="firstname"
                                                 required>
                                         </div>
                                         <div class="col-md-6">
-                                            <label for="lastname" class="form-label">Last Name</label>
+                                            <label for="editlastname" class="form-label">Last Name</label>
                                             <input type="text" class="form-control" id="editlastname" name="lastname"
                                                 required>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-6">
-                                            <label for="username" class="form-label">Username</label>
+                                            <label for="editusername" class="form-label">Username</label>
                                             <input type="text" class="form-control" id="editusername" name="username"
                                                 placeholder="e.g. arbiter2567" required>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-6">
-                                            <label for="email" class="form-label">Email</label>
+                                            <label for="editemail" class="form-label">Email</label>
                                             <input type="email" class="form-control" id="editemail" name="email"
                                                 placeholder="e.g. kurthydeinimperial@gmail.com" required>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-6">
-                                            <label for="contactNumber" class="form-label">Contact Number</label>
+                                            <label for="editcontactNumber" class="form-label">Contact Number</label>
                                             <input type="number" class="form-control" id="editcontactNumber"
                                                 name="contactNumber" maxlength="11" placeholder="e.g. 09683171436"
                                                 required>
