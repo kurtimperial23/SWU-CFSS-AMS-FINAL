@@ -27,7 +27,7 @@
             <div class="row d-flex justify-content-center text-align-center login">
                 <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4 frame">
                     <div class="login-frame">
-                        <form action="./swuCFSS/Process/login_process.php" method="post" class="needs-validation"
+                        <form action="./swuCFSS/common_processes/login_process.php" method="post" class="needs-validation"
                             novalidate>
                             <div class="row flex-column text-center align-items-center">
                                 <div class="col-4">

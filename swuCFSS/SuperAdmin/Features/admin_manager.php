@@ -1,5 +1,5 @@
 <?php
-include_once '../../includes/cdn.php';
+include_once '../../common_includes/cdn.php';
 $current_page = basename($_SERVER['PHP_SELF']);
 
 // start session
@@ -15,7 +15,7 @@ if (!isset($_SESSION["email"])) {
 // check if user has access to this page
 if ($_SESSION["user_role"] != "superAdmin") {
     // Redirect back to the login page with an error message
-    header("Location: ../../Process/authorization_error.php");
+    header("Location: ../../common_processes/authorization_error.php");
     exit();
 }
 
@@ -23,7 +23,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // Include the file containing the database connection code
-include "../../Process/db_connection.php";
+include "../../common_processes/db_connection.php";
 
 // Fetch all admins from the database using prepared statement
 $stmt = $conn->prepare("SELECT first_name, id, last_name, role, contact_number, email, username FROM tbl_users WHERE role = ?");
@@ -133,7 +133,7 @@ ini_set('display_errors', 1);
                                 <h5 class="modal-title" id="editAdminModalLabel">Edit Admin</h5>
                             </div>
                             <div class="modal-body">
-                                <form id="editAdminForm" method="post" action="../Process/edit_admin.php">
+                                <form id="editAdminForm" method="post" action="../superAdmin_processes/edit_admin.php">
                                     <!-- Add a hidden input field to store the admin ID -->
                                     <input type="hidden" id="adminId" name="adminId">
                                     <div class="row mb-3">
@@ -232,7 +232,7 @@ $(document).ready(function() {
         $('#confirmDeleteModal').modal('show');
         $('#confirmDelete').click(function() {
             $.ajax({
-                url: '../Process/delete_admin.php',
+                url: '../superAdmin_processes/delete_admin.php',
                 type: 'post',
                 data: {
                     username: username
@@ -250,7 +250,7 @@ $(document).ready(function() {
         var adminId = $(this).data('userid');
         // Fetch admin details via AJAX and populate the modal fields
         $.ajax({
-            url: '../Process/fetch_admin.php',
+            url: '../superAdmin_processes/fetch_admin.php',
             type: 'post',
             data: {
                 adminId: adminId
@@ -274,7 +274,7 @@ $(document).ready(function() {
         var formData = $('#editAdminForm').serialize();
         // Submit form data via AJAX
         $.ajax({
-            url: '../Process/edit_admin.php',
+            url: '../superAdmin_processes/fetch_admin.php',
             type: 'post',
             data: formData,
             success: function(response) {

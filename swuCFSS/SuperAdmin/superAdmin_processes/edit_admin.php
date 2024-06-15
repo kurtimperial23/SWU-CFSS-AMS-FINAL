@@ -1,5 +1,5 @@
 <?php
-include "../../Process/db_connection.php";
+include "../../common_processes/db_connection.php";
 
 // Check if form data is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

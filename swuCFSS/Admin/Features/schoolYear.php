@@ -1,23 +1,23 @@
 <?php
-require_once ('../../includes/cdn.php');
+require_once ('../../common_includes/cdn.php');
 
 // start session
 session_start();
 
 // check if user is logged in
 if (!isset($_SESSION["email"])) {
-    header("Location: ../../index.php");
+    header("Location: ../../../index.php");
     exit();
 }
 
 // check if user has access to this page
 if ($_SESSION["user_role"] != "admin") {
-    header("Location: ../../Process/authorization_error.php");
+    header("Location: ../../common_processes/authorization_error.php");
     exit();
 }
 
 // Include database connection
-include_once ("../../Process/db_connection.php");
+include_once ("../../common_processes/db_connection.php");
 
 // Fetch school years from the database
 $sql = "SELECT * FROM tbl_schoolyear";
@@ -41,7 +41,7 @@ function formatDate($dateString) {
 
 <body>
     <div class="wrapper">
-        <?php include ('../includes/sidebar.php'); ?>
+        <?php include ('../admin_includes/sidebar.php'); ?>
         <div class="main">
             <nav class="navbar custom-toggler navbar-expand px-3 border-bottom">
                 <button class="btn" id="sidebar-toggle" type="button">
@@ -55,7 +55,7 @@ function formatDate($dateString) {
 
             <main class="content px-3 py-4">
                 <div class="container-fluid">
-                    <?php include '../../Admin/includes/dashboardBanner.php'; ?>
+                    <?php include '../../Admin/admin_includes/dashboardBanner.php'; ?>
                     <div class="col-12 col-md-2 d-flex">
                         <div class="card flex-fill border-0">
                             <div class="card-body d-flex justify-content-center align-items-center">
@@ -74,7 +74,8 @@ function formatDate($dateString) {
                                 <h5 class="modal-title" id="addSchoolYearTitle">Add School Years</h5>
                             </div>
                             <div class="modal-body">
-                                <form id="addSchoolYearForm" method="post" action="../Process/add_schoolyear.php">
+                                <form id="addSchoolYearForm" method="post"
+                                    action="../admin_processes/add_schoolyear.php">
                                     <div class="mb-3">
                                         <label for="schoolYearName" class="form-label">School Year Name:</label>
                                         <input type="text" class="form-control" id="schoolYearName"
@@ -201,4 +202,3 @@ function formatDate($dateString) {
     </div>
 </body>
 <script src="../../Scripts/script.js"></script>
-<script

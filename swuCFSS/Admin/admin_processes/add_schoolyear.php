@@ -3,7 +3,7 @@
 session_start();
 
 // Include the file containing the database connection code
-include "../../Process/db_connection.php";
+include "../../common_processes/db_connection.php";
 
 // Retrieve form data
 $schoolYearName = filter_var($_POST["schoolYearName"], FILTER_SANITIZE_STRING);

@@ -1,7 +1,7 @@
 <?php
-require_once ('../../includes/cdn.php');
-require_once ('../../Process/db_connection.php'); // Include the CRUD functions
-require_once ('../Process/rooms_crud.php'); // Include the CRUD functions
+require_once ('../../common_includes/cdn.php');
+require_once ('../../common_processes/db_connection.php'); // Include the CRUD functions
+require_once ('../admin_processes/rooms_crud.php'); // Include the CRUD functions
 
 session_start();
 
@@ -11,7 +11,7 @@ if (!isset($_SESSION["email"])) {
 }
 
 if ($_SESSION["user_role"] !== "admin") {
-    header("Location: ../../Process/authorization_error.php");
+    header("Location: ../../common_processes/authorization_error.php");
     exit();
 }
 
@@ -69,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <body>
 
     <div class="wrapper">
-        <?php include ('../includes/sidebar.php'); ?>
+        <?php include ('../admin_includes/sidebar.php'); ?>
         <div class="main">
             <nav class="navbar custom-toggler navbar-expand px-3 border-bottom">
                 <button class="btn" id="sidebar-toggle" type="button">
@@ -83,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             <main class="content px-3 py-4">
                 <div class="container-fluid">
-                    <?php include '../../Admin/includes/dashboardBanner.php'; ?>
+                    <?php include '../../Admin/admin_includes/dashboardBanner.php'; ?>
 
                     <div class="col-12 col-md-2 d-flex">
                         <div class="card flex-fill border-0">
@@ -96,7 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </div>
 
                 <?php
-                require_once ('../../Process/delete_alert.php');
+                require_once ('../../common_processes/delete_alert.php');
                 if (isset($_GET['alert'])) {
                     $alert = $_GET['alert'];
                     if ($alert === 'success') {

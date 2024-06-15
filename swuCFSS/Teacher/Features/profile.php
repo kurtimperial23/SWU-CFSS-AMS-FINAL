@@ -1,5 +1,5 @@
 <?php
-include_once '../../includes/cdn.php';
+include_once '../../common_includes/cdn.php';
 
 $current_page = basename($_SERVER['PHP_SELF']);
 
@@ -16,7 +16,7 @@ if (!isset($_SESSION["email"])) {
 // check if user has access to this page
 if ($_SESSION["user_role"] != "teacher") {
     // Redirect back to the login page with an error message
-    header("Location: ../../Process/authorization_error.php");
+    header("Location: ../../common_processes/authorization_error.php");
     exit();
 }
 ?>
@@ -36,7 +36,7 @@ if ($_SESSION["user_role"] != "teacher") {
 <body>
 
     <div class="wrapper">
-        <?php include '../../Teacher/includes/sidebar.php'; ?>
+        <?php include '../../Teacher/teacher_includes/sidebar.php'; ?>
         <div class="main">
             <nav class="navbar custom-toggler navbar-expand px-3 border-bottom">
                 <button class="btn" id="sidebar-toggle" type="button">

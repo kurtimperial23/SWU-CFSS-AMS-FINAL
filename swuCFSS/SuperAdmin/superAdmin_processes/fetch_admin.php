@@ -1,5 +1,5 @@
 <?php
-include "../../Process/db_connection.php";
+include "../../common_processes/db_connection.php";
 
 // Check if admin ID is set
 if (isset($_POST['adminId'])) {

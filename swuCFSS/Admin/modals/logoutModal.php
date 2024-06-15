@@ -11,7 +11,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-                <form id="logoutForm" method="post" action="../../Process/logout_process.php">
+                <form id="logoutForm" method="post" action="../../common_processes/logout_process.php">
                     <input type="hidden" name="logout" value="true">
                     <button type="submit" class="btn btn-danger">Logout</button>
                 </form>
