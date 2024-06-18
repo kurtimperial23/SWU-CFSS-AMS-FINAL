@@ -1,5 +1,5 @@
 <?php
-include_once '../../includes/cdn.php';
+include_once '../../common_includes/cdn.php';
 $current_page = basename($_SERVER['PHP_SELF']);
 
 // Start session
@@ -15,7 +15,7 @@ if (!isset($_SESSION["email"])) {
 // Check if user has access to this page
 if ($_SESSION["user_role"] != "superAdmin") {
     // Redirect back to the login page with an error message
-    header("Location: ../../Process/authorization_error.php");
+    header("Location: ../../common_processes/authorization_error.php");
     exit();
 }
 
@@ -172,7 +172,7 @@ if ($_SESSION["user_role"] != "superAdmin") {
 
                 <div class="form-container">
                     <h3>Add Admin Form</h2>
-                        <form id="userForm" method="post" action="../Process/add_admin.php">
+                        <form id="userForm" method="post" action="../superAdmin_processes/add_admin.php">
                             <div class="input-row">
                                 <div>
                                     <label for="username">First Name</label>

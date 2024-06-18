@@ -166,7 +166,6 @@ body {
   opacity: 1;
   overflow-y: scroll;
   margin: 0;
-  color: var(--color-body);
 }
 
 a {
@@ -262,6 +261,13 @@ a.sidebar-link.sidebar-link-child {
   padding-top: 2px;
   margin-bottom: -3px;
   width: 20px;
+}
+
+.icon-svg {
+  width: 14px; /* Adjust as needed */
+  height: 15px; /* Adjust as needed */
+  margin-bottom: 2.5px;
+  fill: white; /* Change color to white */
 }
 
 .sidebar-link[data-bs-toggle="collapse"]::after {

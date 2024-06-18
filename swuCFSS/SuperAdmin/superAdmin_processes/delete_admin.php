@@ -3,10 +3,10 @@
 session_start();
 
 // Include the file containing the database connection code
-include "../../Process/db_connection.php";
+include "../../common_processes/db_connection.php";
 
 // Check if admin is logged in and has access
-if (!isset($_SESSION["username"]) || $_SESSION["user_role"] != "admin") {
+if (!isset($_SESSION["username"]) || $_SESSION["user_role"] != "superAdmin") {
     // Redirect back to the dashboard with an error message
     header("Location: ../Features/dashboard.php?alert=unauthorized");
     exit();
@@ -33,12 +33,12 @@ $stmt->bind_param("s", $username);
 if ($stmt->execute()) {
     // Admin deleted successfully
     $_SESSION["success_message"] = "Admin deleted successfully.";
-    header("Location: ../Features/schoolYear.php?alert=success");
+    header("Location: ../Features/dashboard.php?alert=success");
     exit();
 } else {
     // Error occurred
     $_SESSION["error_message"] = "Error deleting admin: " . $stmt->error;
-    header("Location: ../Features/schoolYear.php?alert=failure");
+    header("Location: ../Features/dashboard.php?alert=failure");
     exit();
 }
 

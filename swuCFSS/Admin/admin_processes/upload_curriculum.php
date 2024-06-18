@@ -1,5 +1,5 @@
 <?php
-require_once ('../../Process/db_connection.php'); // Include your database connection file
+require_once ('../../common_processes/db_connection.php'); // Include your database connection file
 // Start session
 session_start();
 
@@ -13,7 +13,7 @@ if (!isset($_SESSION["email"])) {
 // Check if user has access to this page
 if ($_SESSION["user_role"] != "admin") {
     // Redirect back to the login page with an error message
-    header("Location: ../../Process/authorization_error.php");
+    header("Location: ../../common_processes/authorization_error.php");
     exit();
 }
 

@@ -1,5 +1,5 @@
 <?php
-require_once ('../../Process/db_connection.php'); // Include your database connection file
+require_once ('../../common_processes/db_connection.php'); // Include your database connection file
 
 // Function to fetch all roomss
 function getRooms()

@@ -1,4 +1,4 @@
-<?php require_once ('../../includes/cdn.php');
+<?php require_once ('../../common_includes/cdn.php');
 
 // start session
 session_start();
@@ -13,7 +13,7 @@ if (!isset($_SESSION["email"])) {
 // check if user has access to this page
 if ($_SESSION["user_role"] != "admin") {
     // Redirect back to the login page with an error message
-    header("Location: ../../Process/authorization_error.php");
+    header("Location: ../../common_processes/authorization_error.php");
     exit();
 }
 ?>
@@ -31,7 +31,7 @@ if ($_SESSION["user_role"] != "admin") {
 <body>
 
     <div class="wrapper">
-        <?php include '../../Admin/includes/sidebar.php'; ?>
+        <?php include '../../Admin/admin_includes/sidebar.php'; ?>
         <div class="main">
             <nav class="navbar custom-toggler navbar-expand px-3 border-bottom">
                 <button class="btn" id="sidebar-toggle" type="button">
@@ -45,7 +45,7 @@ if ($_SESSION["user_role"] != "admin") {
 
             <main class="content px-3 py-4">
                 <div class="container-fluid">
-                    <?php include '../../Admin/includes/dashboardBanner.php'; ?>
+                    <?php include '../../Admin/admin_includes/dashboardBanner.php'; ?>
                     <div class="col-12 col-md-2 d-flex">
                         <div class="card flex-fill border-0 dashboard-dropdown">
                             <!-- dropdown button -->
@@ -70,7 +70,7 @@ if ($_SESSION["user_role"] != "admin") {
                 <!-- modals -->
                 <div class="modal fade" id="schoolYearSelectConfirmation" tabindex="-1" role="dialog"
                     aria-labelledby="schoolYearSelectConfirmationLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="confirmationModalLabel">Confirmation</h5>

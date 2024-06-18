@@ -1,5 +1,5 @@
 <?php
-include_once '../includes/cdn.php'; ?>
+include_once '../common_includes/cdn.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 

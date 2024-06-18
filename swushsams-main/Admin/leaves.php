@@ -1,5 +1,5 @@
 <?php
-include_once '../includes/cdn.php'; ?>
+include_once '../common_includes/cdn.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,7 +11,7 @@ include_once '../includes/cdn.php'; ?>
 
 <body>
     <div class="wrapper">
-        <?php include '../Admin/includes/sidebar.php'; ?>
+        <?php include '../Admin/admin_includes/sidebar.php'; ?>
         <div class="main">
             <nav class="navbar custom-toggler navbar-expand-lg px-3 border-bottom">
                 <button class="btn" id="sidebar-toggle" type="button">
@@ -49,7 +49,7 @@ include_once '../includes/cdn.php'; ?>
 
                                         <!-- Modal -->
                                         <div class="modal fade" id="leaveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                            <div class="modal-dialog   modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h1 class="modal-title fs-5" id="exampleModalLabel">Leave Details</h1>
@@ -119,7 +119,7 @@ include_once '../includes/cdn.php'; ?>
 
                                         <!-- Modal -->
                                         <div class="modal fade" id="leaveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                            <div class="modal-dialog   modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h1 class="modal-title fs-5" id="exampleModalLabel">Leave Details</h1>
@@ -190,7 +190,7 @@ include_once '../includes/cdn.php'; ?>
 
                                         <!-- Modal -->
                                         <div class="modal fade" id="leaveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                            <div class="modal-dialog   modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h1 class="modal-title fs-5" id="exampleModalLabel">Leave Details</h1>

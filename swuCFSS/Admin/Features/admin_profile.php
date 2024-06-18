@@ -9,12 +9,12 @@ session_start();
 // check if user is logged in
 if (!isset($_SESSION["email"])) {
     // Redirect back to the login page with an error message
-    header("Location: ../../index.php");
+    header("Location: ../../../index.php");
     exit();
 }
 
 // check if user has access to this page
-if ($_SESSION["user_role"] != "teacher") {
+if ($_SESSION["user_role"] != "admin") {
     // Redirect back to the login page with an error message
     header("Location: ../../common_processes/authorization_error.php");
     exit();
@@ -36,7 +36,7 @@ if ($_SESSION["user_role"] != "teacher") {
 <body>
 
     <div class="wrapper">
-        <?php include '../../Teacher/teacher_includes/sidebar.php'; ?>
+        <?php include '../admin_includes/sidebar.php'; ?>
         <div class="main">
             <nav class="navbar custom-toggler navbar-expand px-3 border-bottom">
                 <button class="btn" id="sidebar-toggle" type="button">
@@ -50,19 +50,21 @@ if ($_SESSION["user_role"] != "teacher") {
 
             <main class="content px-3 py-4">
                 <!-- Modal -->
-                <?php include ('../../Admin/modals/logoutModal.php'); ?>
+                <?php include ('../modals/logoutModal.php'); ?>
                 <!-- ENDS HERE -->
                 <div class="row h-90">
                     <div class="col-9">
                         <div class="card border-0 h-100">
+                            <div class="card-header">
+                                <h3 class="mb-0"><b>User Profile</b></h3>
+                            </div>
                             <div class="card-body">
-                                <h3 class="mb-4">Profile</h3>
                                 <form action="submit_profile.php" method="post">
                                     <div class="form-group row mb-3">
                                         <label for="fullname" class="col-sm-2 col-form-label">Full Name:</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="fullname" name="fullname"
-                                                required>
+                                        <div class="col-sm-10" aria-disabled="">
+                                            <input type="text" disabled class="form-control" id="fullname"
+                                                name="fullname" required>
                                         </div>
                                     </div>
                                     <div class="form-group row mb-4">
@@ -82,7 +84,8 @@ if ($_SESSION["user_role"] != "teacher") {
                                     <div class="form-group row mb-4">
                                         <label for="email" class="col-sm-2 col-form-label">Email:</label>
                                         <div class="col-sm-10">
-                                            <input type="email" class="form-control" id="email" name="email" required>
+                                            <input type="email" disabled class="form-control" id="email" name="email"
+                                                required>
                                         </div>
                                     </div>
                                     <div class="form-group row mb-4">
@@ -100,7 +103,7 @@ if ($_SESSION["user_role"] != "teacher") {
                                         </div>
                                     </div>
                                     <hr> <!-- Horizontal line to separate sections -->
-                                    <h3 class="mb-4">Address</h3>
+
                                     <div class="form-group row mb-4">
                                         <label for="address" class="col-sm-2 col-form-label">Address:</label>
                                         <div class="col-sm-10">
@@ -119,7 +122,7 @@ if ($_SESSION["user_role"] != "teacher") {
                                         </div>
                                     </div>
                                     <hr> <!-- Horizontal line to separate sections -->
-                                    <h3 class="mb-4">Others</h3>
+
                                     <div class="form-group row mb-4">
                                         <label for="profile_image" class="col-sm-2 col-form-label">Profile
                                             Image:</label>
@@ -128,13 +131,16 @@ if ($_SESSION["user_role"] != "teacher") {
                                                 name="profile_image" accept="image/*" required>
                                         </div>
                                     </div>
-                                    <div class="form-group row mb-4">
-                                        <div class="text-end">
-                                            <button type="submit" class="btn btn-primary">Save Profile</button>
-                                        </div>
-                                    </div>
-                                </form>
                             </div>
+                            <div class="card-footer">
+                                <div class="form-group row">
+                                    <div class="text-end">
+                                        <button class="btn btn-white">Cancel</button>
+                                        <button type="submit" class="btn btn-primary">Save Profile</button>
+                                    </div>
+                                </div>
+                            </div>
+                            </form>
                         </div>
                     </div>
                     <div class="col-3">
@@ -143,12 +149,15 @@ if ($_SESSION["user_role"] != "teacher") {
                                 <!-- User Picture -->
                                 <img src="https://via.placeholder.com/250" class="img-fluid rounded-circle mb-3"
                                     alt="User Picture">
-
                                 <!-- Name -->
                                 <h4 class="card-title">Jules Mark Abgao</h4>
-
                                 <!-- Status -->
                                 <p class="card-text">Status: <span class="text-danger">Overload</span></p>
+                                <hr class="my-4">
+
+                                <button class="btn btn-primary">Edit Profile</button>
+                                <button class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#changePasswordModal">Change Password</button>
                             </div>
                         </div>
                     </div>
@@ -157,6 +166,41 @@ if ($_SESSION["user_role"] != "teacher") {
         </main>
     </div>
     </div>
+
+    <!-- Change Password Modal -->
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
+                </div>
+                <div class="modal-body">
+                    <form action="change_password.php" method="post">
+                        <div class="mb-3">
+                            <label for="currentPassword" class="form-label">Current Password</label>
+                            <input type="password" class="form-control" id="currentPassword" name="currentPassword"
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label">New Password</label>
+                            <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                                required>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary ms-2">Change Password</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 
 </html>

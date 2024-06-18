@@ -1,5 +1,5 @@
 <?php
-require_once '../includes/cdn.php'; ?>
+require_once '../common_includes/cdn.php'; ?>
 
 <aside id="sidebar" class="js-sidebar">
     <!-- Content For Sidebar -->

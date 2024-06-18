@@ -1,5 +1,5 @@
 <?php
-include_once '../includes/cdn.php'; ?>
+include_once '../common_includes/cdn.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,7 +11,7 @@ include_once '../includes/cdn.php'; ?>
 
 <body>
     <div class="wrapper">
-        <?php include '../Admin/includes/sidebar.php'; ?>
+        <?php include '../Admin/admin_includes/sidebar.php'; ?>
         <div class="main">
             <nav class="navbar custom-toggler navbar-expand-lg px-3 border-bottom">
                 <button class="btn" id="sidebar-toggle" type="button">
@@ -37,7 +37,7 @@ include_once '../includes/cdn.php'; ?>
 
                                 <!-- Modal for add user -->
                                 <div class="modal fade" id="adduserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-dialog  ">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Add New User Form</h1>
@@ -144,7 +144,7 @@ include_once '../includes/cdn.php'; ?>
                             <!-- Modal for import data -->
                             <!-- Modal -->
                             <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-dialog  ">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h1 class="modal-title fs-5" id="exampleModalLabel">Import User Data</h1>
@@ -171,7 +171,7 @@ include_once '../includes/cdn.php'; ?>
 
                             <!-- Modal for Export Data -->
                             <div class="modal fade" id="exportModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-dialog  ">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h1 class="modal-title fs-5" id="exampleModalLabel">Export Master Data</h1>
