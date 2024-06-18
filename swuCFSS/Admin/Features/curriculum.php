@@ -68,7 +68,8 @@ if ($_SESSION["user_role"] != "admin") {
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
-                            <form action="../admin_processes/upload_curriculum.php" method="post" enctype="multipart/form-data">
+                            <form action="../admin_processes/upload_curriculum.php" method="post"
+                                enctype="multipart/form-data">
                                 <div class="modal-body">
                                     <div class="mb-3">
                                         <label for="curriculumFile" class="form-label">Choose CSV file</label>

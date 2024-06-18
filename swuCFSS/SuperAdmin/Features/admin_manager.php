@@ -106,7 +106,7 @@ ini_set('display_errors', 1);
                 <!-- Modal -->
                 <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel"
                     aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-dialog  ">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Deletion</h5>
@@ -127,7 +127,7 @@ ini_set('display_errors', 1);
                 <!-- Modal -->
                 <div class="modal fade" id="editAdminModal" tabindex="-1" aria-labelledby="editAdminModalLabel"
                     aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-dialog  ">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="editAdminModalLabel">Edit Admin</h5>

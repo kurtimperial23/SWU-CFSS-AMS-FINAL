@@ -122,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 <div class="modal fade" id="addRoomModal" tabindex="-1" role="dialog"
                     aria-labelledby="addRoomModalTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="addRoomModalTitle">Add Rooms</h5>
@@ -151,7 +151,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 <div class="modal fade" id="editRoomModal<?php echo $room['id']; ?>" tabindex="-1" role="dialog"
                     aria-labelledby="editRoomModal<?php echo $room['id']; ?>Title" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="editRoomModal<?php echo $room['id']; ?>Title">Edit Room</h5>
@@ -183,7 +183,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
                 <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog"
                     aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Delete</h5>

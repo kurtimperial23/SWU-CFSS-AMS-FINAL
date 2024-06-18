@@ -47,7 +47,6 @@ if ($_SESSION["user_role"] != "admin") {
                 <div class="container-fluid">
                     <?php include '../../Admin/admin_includes/dashboardBanner.php'; ?>
                     <!-- SAME ROW OF DASHBOARD BANNER BUT LIKE I JUST PUT IT HERE KAY FOR EVERY PAGE LAHE LAHE -->
-
                 </div>
 
                 <!-- modals -->
