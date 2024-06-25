@@ -65,7 +65,7 @@ if ($stmt->execute()) {
         // Content
         $mail->isHTML(true);
         $mail->Subject = 'Admin Account Created';
-        $mail->Body    = "<p>Dear $firstname $lastname,</p>
+        $mail->Body = "<p>Dear $firstname $lastname,</p>
                           <p>Your admin account has been created successfully. Here are your credentials:</p>
                           <p><b>Username:</b> $email</p>
                           <p><b>Password:</b> $password</p>

@@ -1,24 +1,25 @@
 <?php
 include_once '../../common_includes/cdn.php';
 
-$current_page = basename($_SERVER['PHP_SELF']);
-
-// start session
+// Start session
 session_start();
 
-// check if user is logged in
+// Check if user is logged in
 if (!isset($_SESSION["email"])) {
     // Redirect back to the login page with an error message
     header("Location: ../../../index.php");
     exit();
 }
 
-// check if user has access to this page
+// Check if user has access to this page
 if ($_SESSION["user_role"] != "admin") {
     // Redirect back to the login page with an error message
     header("Location: ../../common_processes/authorization_error.php");
     exit();
 }
+
+// Capture the original page URL
+$originalPage = $_SERVER['REQUEST_URI'];
 ?>
 
 <!DOCTYPE html>
@@ -50,7 +51,7 @@ if ($_SESSION["user_role"] != "admin") {
 
             <main class="content px-3 py-4">
                 <!-- Modal -->
-                <?php include ('../modals/logoutModal.php'); ?>
+                <?php include('../modals/logoutModal.php'); ?>
                 <!-- ENDS HERE -->
                 <div class="row h-90">
                     <div class="col-9">
@@ -163,8 +164,16 @@ if ($_SESSION["user_role"] != "admin") {
                     </div>
                 </div>
         </div>
+
+        <!-- Feedback Messages -->
+        <?php if (!empty($error)): ?>
+        <div class="alert alert-danger"><?php echo $error; ?></div>
+        <?php endif; ?>
+        <?php if (!empty($success)): ?>
+        <div class="alert alert-success"><?php echo $success; ?></div>
+        <?php endif; ?>
+
         </main>
-    </div>
     </div>
 
     <!-- Change Password Modal -->
@@ -176,7 +185,9 @@ if ($_SESSION["user_role"] != "admin") {
                     <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
                 </div>
                 <div class="modal-body">
-                    <form action="change_password.php" method="post">
+                    <form
+                        action="../../common_processes/change_password.php?redirect=<?php echo urlencode($originalPage); ?>"
+                        method="post">
                         <div class="mb-3">
                             <label for="currentPassword" class="form-label">Current Password</label>
                             <input type="password" class="form-control" id="currentPassword" name="currentPassword"
@@ -200,7 +211,6 @@ if ($_SESSION["user_role"] != "admin") {
             </div>
         </div>
     </div>
-
 </body>
 
 </html>
