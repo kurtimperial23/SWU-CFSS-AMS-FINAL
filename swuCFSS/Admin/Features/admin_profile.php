@@ -190,17 +190,33 @@ $originalPage = $_SERVER['REQUEST_URI'];
                         method="post">
                         <div class="mb-3">
                             <label for="currentPassword" class="form-label">Current Password</label>
-                            <input type="password" class="form-control" id="currentPassword" name="currentPassword"
-                                required>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="currentPassword" name="currentPassword"
+                                    required>
+                                <button class="btn btn-outline-secondary me-1" type="button" id="toggleCurrentPassword">
+                                    <i class="fas fa-eye-slash"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="newPassword" class="form-label">New Password</label>
-                            <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="newPassword" name="newPassword"
+                                    required>
+                                <button class="btn btn-outline-secondary me-1" type="button" id="toggleNewPassword">
+                                    <i class="fas fa-eye-slash"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="confirmPassword" class="form-label">Confirm New Password</label>
-                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
-                                required>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                                    required>
+                                <button class="btn btn-outline-secondary me-1" type="button" id="toggleConfirmPassword">
+                                    <i class="fas fa-eye-slash"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="d-flex justify-content-end">
                             <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
@@ -211,6 +227,30 @@ $originalPage = $_SERVER['REQUEST_URI'];
             </div>
         </div>
     </div>
+
+    <script>
+    // Password visibility toggle
+    (function() {
+        "use strict";
+
+        const togglePasswordVisibility = (toggleButtonId, passwordInputId) => {
+            const toggleButton = document.getElementById(toggleButtonId);
+            const passwordInput = document.getElementById(passwordInputId);
+
+            toggleButton.addEventListener("click", function() {
+                const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+                passwordInput.setAttribute("type", type);
+                toggleButton.innerHTML = type === "password" ? '<i class="fas fa-eye-slash"></i>' :
+                    '<i class="fas fa-eye"></i>';
+            });
+        };
+
+        togglePasswordVisibility("toggleCurrentPassword", "currentPassword");
+        togglePasswordVisibility("toggleNewPassword", "newPassword");
+        togglePasswordVisibility("toggleConfirmPassword", "confirmPassword");
+    })();
+    </script>
+
 </body>
 
 </html>
