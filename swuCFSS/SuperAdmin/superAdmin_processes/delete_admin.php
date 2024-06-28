@@ -6,14 +6,14 @@ session_start();
 include "../../common_processes/db_connection.php";
 
 // Check if admin is logged in and has access
-if (!isset($_SESSION["username"]) || $_SESSION["user_role"] != "superAdmin") {
+if (!isset($_SESSION["email"]) || $_SESSION["user_role"] != "superAdmin") {
     // Redirect back to the dashboard with an error message
     header("Location: ../Features/dashboard.php?alert=unauthorized");
     exit();
 }
 
 // Check if username is provided in the POST request
-if (!isset($_POST["username"])) {
+if (!isset($_POST["email"])) {
     // Redirect back to the dashboard with an error message
     header("Location: ../Features/dashboard.php?alert=invalid_request");
     exit();
@@ -23,11 +23,11 @@ if (!isset($_POST["username"])) {
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 // Get the username from the POST request
-$username = $_POST["username"];
+$email = $_POST["email"];
 
 // Prepare and bind the SQL statement to delete the admin based on username
-$stmt = $conn->prepare("DELETE FROM tbl_users WHERE username = ?");
-$stmt->bind_param("s", $username);
+$stmt = $conn->prepare("DELETE FROM tbl_users WHERE email = ?");
+$stmt->bind_param("s", $email);
 
 // Execute the statement
 if ($stmt->execute()) {

@@ -24,7 +24,8 @@ $sql = "SELECT * FROM tbl_schoolyear";
 $result = $conn->query($sql);
 
 // Function to format date strings
-function formatDate($dateString) {
+function formatDate($dateString)
+{
     $timestamp = strtotime($dateString);
     return date("M d, Y", $timestamp);
 }
@@ -43,15 +44,7 @@ function formatDate($dateString) {
     <div class="wrapper">
         <?php include ('../admin_includes/sidebar.php'); ?>
         <div class="main">
-            <nav class="navbar custom-toggler navbar-expand px-3 border-bottom">
-                <button class="btn" id="sidebar-toggle" type="button">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse navbar p-0 d-flex justify-content-end align-items-center">
-                    <span>Welcome back <b>Kurt</b>!</span>
-                    <a href="#" class="las la-user-circle ps-2"></a>
-                </div>
-            </nav>
+            <?php include '../admin_includes/admin_nav.php' ?>
 
             <main class="content px-3 py-4">
                 <div class="container-fluid">
@@ -180,7 +173,6 @@ function formatDate($dateString) {
                                 <?php
                                 if ($result->num_rows > 0) {
                                     while ($row = mysqli_fetch_assoc($result)) {
-                                        print_r($row);
                                         echo "<tr>";
                                         echo "<td>" . $row['id'] . "</td>";
                                         echo "<td>" . $row['schoolyear_name'] . "</td>";

@@ -26,12 +26,15 @@ ini_set('display_errors', 1);
 include "../../common_processes/db_connection.php";
 
 // Fetch all admins from the database using prepared statement
-$stmt = $conn->prepare("SELECT first_name, id, last_name, role, contact_number, email, username FROM tbl_users WHERE role = ?");
+$stmt = $conn->prepare("SELECT first_name, id, last_name, role, contact_number, email FROM tbl_users WHERE role = ?");
 $role = "admin";
 $stmt->bind_param("s", $role);
 $stmt->execute();
 $result = $stmt->get_result();
 
+$user = $result->fetch_assoc();
+
+$name = $user['first_name'];
 
 // Error reporting
 error_reporting(E_ALL);
@@ -96,7 +99,7 @@ ini_set('display_errors', 1);
                     <span class="navbar-toggler-icon "></span>
                 </button>
                 <div class="navbar-collapse navbar p-0 d-flex justify-content-end align-items-center">
-                    <span>Welcome back <b>Super Admin</b>!</span>
+                    <span>Welcome back Admin <b><?php echo $name; ?></b>!</span>
                     <a href="#" class="las la-user-circle ps-2"></a>
                 </div>
             </nav>
@@ -186,7 +189,6 @@ ini_set('display_errors', 1);
                         <table id="myTable" class="table table-hover" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Username</th>
                                     <th>Fullname</th>
                                     <th>Email</th>
                                     <th>Role</th>
@@ -199,7 +201,6 @@ ini_set('display_errors', 1);
                                 <?php
                                 while ($row = $result->fetch_assoc()) {
                                     echo "<tr class='align-middle'>";
-                                    echo "<td>" . $row['username'] . "</td>";
                                     echo "<td>" . $row['first_name'] . " " . $row['last_name'] . "</td>";
                                     echo "<td>" . $row['email'] . "</td>";
                                     echo "<td>" . $row['role'] . "</td>";
@@ -211,7 +212,7 @@ ini_set('display_errors', 1);
                                     echo "</select>";
                                     echo "</td>";
                                     echo "<td class='text-center'>";
-                                    echo "<a href='#' class='btn btn-danger btn-sm delete-btn' data-username='" . $row['username'] . "'><i class='fa-solid fa-trash'></i></a> ";
+                                    echo "<a href='#' class='btn btn-danger btn-sm delete-btn' data-username='" . $row['email'] . "'><i class='fa-solid fa-trash'></i></a> ";
                                     echo "<a href='#' class='btn btn-primary btn-sm edit-btn' data-userid='" . $row['id'] . "'><i class='fa-solid fa-pen-to-square'></i></a>";
                                     echo "</td>";
                                     echo "</tr>";
@@ -228,14 +229,14 @@ ini_set('display_errors', 1);
 <script>
 $(document).ready(function() {
     $('.delete-btn').click(function() {
-        var username = $(this).data('username');
+        var email = $(this).data('email');
         $('#confirmDeleteModal').modal('show');
         $('#confirmDelete').click(function() {
             $.ajax({
                 url: '../superAdmin_processes/delete_admin.php',
                 type: 'post',
                 data: {
-                    username: username
+                    email: email
                 }, // Send username instead of id
                 success: function(response) {
                     window.location

@@ -31,66 +31,66 @@ if ($_SESSION["user_role"] != "superAdmin") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Information Form</title>
     <style>
-    .form-container {
-        width: 40%;
-        margin: 20px auto;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        box-sizing: border-box;
-        font-family: Arial, sans-serif
-    }
+        .form-container {
+            width: 40%;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif
+        }
 
-    form label {
-        display: block;
-        margin-bottom: 5px;
-        font-weight: bold
-    }
+        form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold
+        }
 
-    form .input-row {
-        display: flex;
-        margin-bottom: 15px
-    }
+        form .input-row {
+            display: flex;
+            margin-bottom: 15px
+        }
 
-    form .input-row>div {
-        flex: 1;
-        margin-right: 5px
-    }
+        form .input-row>div {
+            flex: 1;
+            margin-right: 5px
+        }
 
-    form .input-row>div:last-child {
-        margin-right: 0
-    }
+        form .input-row>div:last-child {
+            margin-right: 0
+        }
 
-    form .input-row input,
-    form .input-row select {
-        width: 100%;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-        font-size: 16px
-    }
+        form .input-row input,
+        form .input-row select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px
+        }
 
-    form input[type="submit"] {
-        width: auto;
-        padding: 10px 20px;
-        background-color: #0d6efd;
-        color: #fff;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px
-    }
+        form input[type="submit"] {
+            width: auto;
+            padding: 10px 20px;
+            background-color: #0d6efd;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px
+        }
 
-    form input[type="submit"]:hover {
-        background-color: #45a049
-    }
+        form input[type="submit"]:hover {
+            background-color: #45a049
+        }
 
-    .alert {
-        position: absolute;
-        display: block;
-        right: 10
-    }
+        .alert {
+            position: absolute;
+            display: block;
+            right: 10
+        }
     </style>
 </head>
 

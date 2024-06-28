@@ -19,6 +19,7 @@ if ($_SESSION["user_role"] != "teacher") {
     header("Location: ../../common_processes/authorization_error.php");
     exit();
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -42,7 +43,7 @@ if ($_SESSION["user_role"] != "teacher") {
                     <span class="navbar-toggler-icon "></span>
                 </button>
                 <div class="navbar-collapse navbar p-0 d-flex justify-content-end align-items-center">
-                    <span>Welcome back <b>Teacher</b>!</span>
+                    <span>Welcome back Admin <b><?php echo ('first_name'); ?></b>!</span>
                     <a href="#" class="las la-user-circle ps-2"></a>
                 </div>
             </nav>

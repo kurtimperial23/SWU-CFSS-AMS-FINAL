@@ -39,19 +39,32 @@ $originalPage = $_SERVER['REQUEST_URI'];
     <div class="wrapper">
         <?php include '../admin_includes/sidebar.php'; ?>
         <div class="main">
-            <nav class="navbar custom-toggler navbar-expand px-3 border-bottom">
-                <button class="btn" id="sidebar-toggle" type="button">
-                    <span class="navbar-toggler-icon "></span>
-                </button>
-                <div class="navbar-collapse navbar p-0 d-flex justify-content-end align-items-center">
-                    <span>Welcome back <b>Teacher</b>!</span>
-                    <a href="#" class="las la-user-circle ps-2"></a>
-                </div>
-            </nav>
+            <?php include '../admin_includes/admin_nav.php' ?>
 
             <main class="content px-3 py-4">
                 <!-- Modal -->
-                <?php include('../modals/logoutModal.php'); ?>
+                <?php include ('../modals/logoutModal.php');
+                // Display alerts based on URL parameter
+                if (isset($_GET['alert'])) {
+                    $alert = $_GET['alert'];
+                    if ($alert === 'success') {
+                        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>Success!</strong> Password changed successfully.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>';
+                    } elseif ($alert === 'error') {
+                        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Error!</strong> Password change unsuccessful.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>';
+                    } elseif ($alert === 'duplicate') {
+                        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Error!</strong> current password is incorrect.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>';
+                    }
+                }
+                ?>
                 <!-- ENDS HERE -->
                 <div class="row h-90">
                     <div class="col-9">
@@ -156,24 +169,17 @@ $originalPage = $_SERVER['REQUEST_URI'];
                                 <p class="card-text">Status: <span class="text-danger">Overload</span></p>
                                 <hr class="my-4">
 
-                                <button class="btn btn-primary">Edit Profile</button>
-                                <button class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#changePasswordModal">Change Password</button>
+                                <div class="d-grid gap-2 d-md-block">
+                                    <button class="btn btn-primary btn-sm btn-md btn-lg">Edit Profile</button>
+                                    <button class="btn btn-primary btn-sm btn-md btn-lg" data-bs-toggle="modal"
+                                        data-bs-target="#changePasswordModal">Change Password</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </main>
         </div>
-
-        <!-- Feedback Messages -->
-        <?php if (!empty($error)): ?>
-        <div class="alert alert-danger"><?php echo $error; ?></div>
-        <?php endif; ?>
-        <?php if (!empty($success)): ?>
-        <div class="alert alert-success"><?php echo $success; ?></div>
-        <?php endif; ?>
-
-        </main>
     </div>
 
     <!-- Change Password Modal -->
@@ -220,7 +226,8 @@ $originalPage = $_SERVER['REQUEST_URI'];
                         </div>
                         <div class="d-flex justify-content-end">
                             <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary ms-2">Change Password</button>
+                            <button type="submit" id="changePasswordButton" class="btn btn-primary ms-2">Change
+                                Password</button>
                         </div>
                     </form>
                 </div>
@@ -229,26 +236,42 @@ $originalPage = $_SERVER['REQUEST_URI'];
     </div>
 
     <script>
-    // Password visibility toggle
-    (function() {
-        "use strict";
+        // Password visibility toggle
+        (function () {
+            "use strict";
 
-        const togglePasswordVisibility = (toggleButtonId, passwordInputId) => {
-            const toggleButton = document.getElementById(toggleButtonId);
-            const passwordInput = document.getElementById(passwordInputId);
+            const togglePasswordVisibility = (toggleButtonId, passwordInputId) => {
+                const toggleButton = document.getElementById(toggleButtonId);
+                const passwordInput = document.getElementById(passwordInputId);
 
-            toggleButton.addEventListener("click", function() {
-                const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
-                passwordInput.setAttribute("type", type);
-                toggleButton.innerHTML = type === "password" ? '<i class="fas fa-eye-slash"></i>' :
-                    '<i class="fas fa-eye"></i>';
-            });
-        };
+                toggleButton.addEventListener("click", function () {
+                    const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+                    passwordInput.setAttribute("type", type);
+                    toggleButton.innerHTML = type === "password" ? '<i class="fas fa-eye-slash"></i>' :
+                        '<i class="fas fa-eye"></i>';
+                });
+            };
 
-        togglePasswordVisibility("toggleCurrentPassword", "currentPassword");
-        togglePasswordVisibility("toggleNewPassword", "newPassword");
-        togglePasswordVisibility("toggleConfirmPassword", "confirmPassword");
-    })();
+            togglePasswordVisibility("toggleCurrentPassword", "currentPassword");
+            togglePasswordVisibility("toggleNewPassword", "newPassword");
+            togglePasswordVisibility("toggleConfirmPassword", "confirmPassword");
+
+            // Password match validation
+            const newPassword = document.getElementById('newPassword');
+            const confirmPassword = document.getElementById('confirmPassword');
+            const changePasswordButton = document.getElementById('changePasswordButton');
+
+            const validatePasswords = () => {
+                if (newPassword.value && confirmPassword.value && newPassword.value === confirmPassword.value) {
+                    changePasswordButton.removeAttribute('disabled');
+                } else {
+                    changePasswordButton.setAttribute('disabled', true);
+                }
+            };
+
+            newPassword.addEventListener('input', validatePasswords);
+            confirmPassword.addEventListener('input', validatePasswords);
+        })();
     </script>
 
 </body>

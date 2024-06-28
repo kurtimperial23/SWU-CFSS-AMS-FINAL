@@ -17,6 +17,17 @@ $error = $success = "";
 // Get redirect URL
 $redirectUrl = isset($_GET['redirect']) ? urldecode($_GET['redirect']) : 'default_page.php';
 
+// Function to update the URL with a single alert parameter
+function redirectTo($url, $alertType)
+{
+    // Remove any existing alert parameters from the URL
+    $url = preg_replace('/([?&])alert=[^&]+(&|$)/', '$1', $url);
+    // Append the new alert parameter
+    $separator = (strpos($url, '?') === false) ? '?' : '&';
+    header("Location: " . $url . $separator . "alert=" . $alertType);
+    exit();
+}
+
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get form inputs
@@ -41,25 +52,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Verify current password
         if (!password_verify($currentPassword, $user['password'])) {
-            $error = "Current password is incorrect.";
+            redirectTo($redirectUrl, "duplicate");
         } else {
-            // Hash the new password
-            $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
-
-            // Update the password in the database
-            $updateSql = "UPDATE tbl_users SET password = ? WHERE email = ?";
-            $updateStmt = $conn->prepare($updateSql);
-            $updateStmt->bind_param("ss", $hashedPassword, $email);
-
-            if ($updateStmt->execute()) {
-                $success = "Password changed successfully.";
-                // Redirect to the original page
-                header("Location: " . $redirectUrl);
-                exit();
+            // Check if the current password and new password are the same
+            if (password_verify($newPassword, $user['password'])) {
+                // Redirect to the original page with duplicate password alert
+                redirectTo($redirectUrl, "duplicate");
             } else {
-                $error = "Failed to change password. Please try again.";
+                // Hash the new password
+                $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+
+                // Update the password in the database
+                $updateSql = "UPDATE tbl_users SET password = ? WHERE email = ?";
+                $updateStmt = $conn->prepare($updateSql);
+                $updateStmt->bind_param("ss", $hashedPassword, $email);
+
+                if ($updateStmt->execute()) {
+                    // Redirect to the original page with success alert
+                    redirectTo($redirectUrl, "success");
+                } else {
+                    // Redirect to the original page with error alert
+                    redirectTo($redirectUrl, "error");
+                }
             }
         }
+    }
+
+    // Redirect to the original page with error alert if any error occurs
+    if (!empty($error)) {
+        redirectTo($redirectUrl, "error");
     }
 }
 ?>
