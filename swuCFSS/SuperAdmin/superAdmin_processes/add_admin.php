@@ -54,7 +54,7 @@ if ($stmt->execute()) {
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
         $mail->Username = 'kupa.imperial.swu@phinmaed.com';  // Replace with your Gmail address
-        $mail->Password = 'hzxnfwwcsvjvyobs';  // Replace with your Gmail password or App Password
+        $mail->Password = 'oskruqkeezahkpmh'; //'hzxnfwwcsvjvyobs' Replace with your Gmail password or App Password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
@@ -71,13 +71,13 @@ if ($stmt->execute()) {
                           <p><b>Password:</b> $password</p>
                           <p>Please change your password after logging in for the first time.</p>";
         $mail->send();
-        header("Location: ../Features/admin_manager.php?alert=success");
+        header("Location: ../Features/dashboard.php?alert=success");
     } catch (Exception $e) {
         error_log("Message could not be sent. Mailer Error: {$mail->ErrorInfo}");
-        header("Location: ../Features/admin_manager.php?alert=emailerror");
+        header("Location: ../Features/dashboard.php?alert=error2");
     }
 } else {
-    header("Location: ../Features/admin_manager.php?alert=cantcommit");
+    header("Location: ../Features/dashboard.php?alert=error1");
 }
 
 $stmt->close();

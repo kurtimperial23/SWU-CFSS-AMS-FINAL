@@ -33,12 +33,12 @@ $stmt->bind_param("s", $email);
 if ($stmt->execute()) {
     // Admin deleted successfully
     $_SESSION["success_message"] = "Admin deleted successfully.";
-    header("Location: ../Features/dashboard.php?alert=success");
+    header("Location: ../Features/admin_manager.php?alert=deleted");
     exit();
 } else {
     // Error occurred
     $_SESSION["error_message"] = "Error deleting admin: " . $stmt->error;
-    header("Location: ../Features/dashboard.php?alert=failure");
+    header("Location: ../Features/admin_manager.php?alert=error");
     exit();
 }
 

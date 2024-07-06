@@ -19,6 +19,30 @@ if ($_SESSION["user_role"] != "teacher") {
     header("Location: ../../common_processes/authorization_error.php");
     exit();
 }
+
+// Include the file containing the database connection code
+include "../../common_processes/db_connection.php";
+
+// Fetch the superadmin's name from the database using their email from the session
+$email = $_SESSION["email"];
+$sql = "SELECT first_name FROM tbl_users WHERE email = ? AND role = 'teacher'";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $teacher = $result->fetch_assoc();
+    $name = $teacher['first_name'];
+} else {
+    // Handle case where user is not found
+    $name = 'User';
+}
+
+$stmt->close();
+
+// Capture the original page URL
+$originalPage = $_SERVER['REQUEST_URI'];
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +67,7 @@ if ($_SESSION["user_role"] != "teacher") {
                     <span class="navbar-toggler-icon "></span>
                 </button>
                 <div class="navbar-collapse navbar p-0 d-flex justify-content-end align-items-center">
-                    <span>Welcome back <b>Teacher</b>!</span>
+                    <span>Welcome back Teacher <b><?php echo htmlspecialchars($name); ?></b>!</span>
                     <a href="#" class="las la-user-circle ps-2"></a>
                 </div>
             </nav>
@@ -143,10 +167,8 @@ if ($_SESSION["user_role"] != "teacher") {
                                 <!-- User Picture -->
                                 <img src="https://via.placeholder.com/250" class="img-fluid rounded-circle mb-3"
                                     alt="User Picture">
-
                                 <!-- Name -->
                                 <h4 class="card-title">Jules Mark Abgao</h4>
-
                                 <!-- Status -->
                                 <p class="card-text">Status: <span class="text-danger">Overload</span></p>
                             </div>

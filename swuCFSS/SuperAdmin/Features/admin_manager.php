@@ -2,28 +2,45 @@
 include_once '../../common_includes/cdn.php';
 $current_page = basename($_SERVER['PHP_SELF']);
 
-// start session
-session_start();
+// Start session if not already started
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
-// check if user is logged in
+// Check if user is logged in
 if (!isset($_SESSION["email"])) {
     // Redirect back to the login page with an error message
     header("Location: ../../../index.php");
     exit();
 }
 
-// check if user has access to this page
+// Check if user has access to this page
 if ($_SESSION["user_role"] != "superAdmin") {
     // Redirect back to the login page with an error message
     header("Location: ../../common_processes/authorization_error.php");
     exit();
 }
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 // Include the file containing the database connection code
 include "../../common_processes/db_connection.php";
+
+// Fetch the superadmin's name from the database using their email from the session
+$email = $_SESSION["email"];
+$sql = "SELECT first_name FROM tbl_users WHERE email = ? AND role = 'superAdmin'";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $superadmin = $result->fetch_assoc();
+    $name = $superadmin['first_name'];
+} else {
+    // Handle case where superadmin is not found
+    $name = 'User';
+}
+
+$stmt->close();
 
 // Fetch all admins from the database using prepared statement
 $stmt = $conn->prepare("SELECT first_name, id, last_name, role, contact_number, email FROM tbl_users WHERE role = ?");
@@ -32,11 +49,6 @@ $stmt->bind_param("s", $role);
 $stmt->execute();
 $result = $stmt->get_result();
 
-$user = $result->fetch_assoc();
-
-$name = $user['first_name'];
-
-// Error reporting
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 ?>
@@ -99,14 +111,39 @@ ini_set('display_errors', 1);
                     <span class="navbar-toggler-icon "></span>
                 </button>
                 <div class="navbar-collapse navbar p-0 d-flex justify-content-end align-items-center">
-                    <span>Welcome back Admin <b><?php echo $name; ?></b>!</span>
+                    <span>Welcome back Admin <b><?php echo htmlspecialchars($name); ?></b>!</span>
                     <a href="#" class="las la-user-circle ps-2"></a>
                 </div>
             </nav>
 
             <main class="content px-3 py-4">
-                <?php include ('../../Admin/modals/logoutModal.php'); ?>
-                <!-- Modal -->
+                <?php include ('../../Admin/modals/logoutModal.php');
+                // Display alerts based on URL parameter
+                if (isset($_GET['alert'])) {
+                    $alert = $_GET['alert'];
+                    if ($alert === 'deleted') {
+                        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>Success!</strong> Admin deleted successfuly.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>';
+                    } elseif ($alert === 'edited') {
+                        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>Success!</strong> Admin edited successfuly
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>';
+                    } elseif ($alert === 'error') {
+                        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Error!</strong> Cant proceed with operation.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>';
+                    } elseif ($alert === 'duplicate') {
+                        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Error!</strong> current password is incorrect.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>';
+                    }
+                }
+                ?>
                 <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog  ">
@@ -182,7 +219,7 @@ ini_set('display_errors', 1);
                 <div class="card border-0">
                     <div class="card-header">
                         <h5 class="card-title  m-0">
-                            Subjects
+                            Admins
                         </h5>
                     </div>
                     <div class="card-body">
@@ -212,7 +249,7 @@ ini_set('display_errors', 1);
                                     echo "</select>";
                                     echo "</td>";
                                     echo "<td class='text-center'>";
-                                    echo "<a href='#' class='btn btn-danger btn-sm delete-btn' data-username='" . $row['email'] . "'><i class='fa-solid fa-trash'></i></a> ";
+                                    echo "<a href='#' class='btn btn-danger btn-sm delete-btn' data-email='" . $row['email'] . "'><i class='fa-solid fa-trash'></i></a> ";
                                     echo "<a href='#' class='btn btn-primary btn-sm edit-btn' data-userid='" . $row['id'] . "'><i class='fa-solid fa-pen-to-square'></i></a>";
                                     echo "</td>";
                                     echo "</tr>";
@@ -227,65 +264,62 @@ ini_set('display_errors', 1);
         </div>
 </body>
 <script>
-$(document).ready(function() {
-    $('.delete-btn').click(function() {
-        var email = $(this).data('email');
-        $('#confirmDeleteModal').modal('show');
-        $('#confirmDelete').click(function() {
+    $(document).ready(function () {
+        $('.delete-btn').click(function () {
+            var email = $(this).data('email');
+            $('#confirmDeleteModal').modal('show');
+            $('#confirmDelete').click(function () {
+                $.ajax({
+                    url: '../superAdmin_processes/delete_admin.php',
+                    type: 'post',
+                    data: {
+                        email: email
+                    },
+                    success: function (response) {
+                        window.location.href =
+                            'admin_manager.php?alert=deleted'; // Redirect with URL parameter for success
+                    },
+                    error: function () {
+                        window.location.href =
+                            'admin_manager.php?alert=error'; // Redirect with URL parameter for error
+                    }
+                });
+            });
+        });
+
+        // Function to handle edit button click
+        $('.edit-btn').click(function () {
+            var adminId = $(this).data('userid');
             $.ajax({
-                url: '../superAdmin_processes/delete_admin.php',
+                url: '../superAdmin_processes/fetch_admin.php',
                 type: 'post',
                 data: {
-                    email: email
-                }, // Send username instead of id
-                success: function(response) {
-                    window.location
-                        .reload(); // Reload the page after successful deletion
+                    adminId: adminId
+                },
+                success: function (response) {
+                    var admin = JSON.parse(response);
+                    $('#adminId').val(admin.id);
+                    $('#editfirstname').val(admin.first_name);
+                    $('#editlastname').val(admin.last_name);
+                    $('#editemail').val(admin.email);
+                    $('#editcontactNumber').val(admin.contact_number);
+                    $('#editAdminModal').modal('show');
+                }
+            });
+        });
+
+        $('#saveChangesBtn').click(function () {
+            var formData = $('#editAdminForm').serialize();
+            $.ajax({
+                url: '../superAdmin_processes/fetch_admin.php',
+                type: 'post',
+                data: formData,
+                success: function (response) {
+                    window.location.reload();
                 }
             });
         });
     });
-
-    // Function to handle edit button click
-    $('.edit-btn').click(function() {
-        var adminId = $(this).data('userid');
-        // Fetch admin details via AJAX and populate the modal fields
-        $.ajax({
-            url: '../superAdmin_processes/fetch_admin.php',
-            type: 'post',
-            data: {
-                adminId: adminId
-            },
-            success: function(response) {
-                var admin = JSON.parse(response);
-                $('#adminId').val(admin.id);
-                $('#editfirstname').val(admin.first_name);
-                $('#editlastname').val(admin.last_name);
-                $('#editusername').val(admin.username);
-                $('#editcontactNumber').val(admin.contact_number);
-                $('#editemail').val(admin.email);
-                $('#editAdminModal').modal('show');
-            }
-        });
-    });
-
-    // Function to handle save changes button click
-    $('#saveChangesBtn').click(function() {
-        // Serialize form data
-        var formData = $('#editAdminForm').serialize();
-        // Submit form data via AJAX
-        $.ajax({
-            url: '../superAdmin_processes/fetch_admin.php',
-            type: 'post',
-            data: formData,
-            success: function(response) {
-                // Reload the page after successful update
-                window.location.reload();
-            }
-        });
-    });
-
-});
 </script>
 
 </html>

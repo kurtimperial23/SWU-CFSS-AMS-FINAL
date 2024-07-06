@@ -20,6 +20,30 @@ if ($_SESSION["user_role"] != "teacher") {
     exit();
 }
 
+// Include the file containing the database connection code
+include "../../common_processes/db_connection.php";
+
+// Fetch the superadmin's name from the database using their email from the session
+$email = $_SESSION["email"];
+$sql = "SELECT first_name FROM tbl_users WHERE email = ? AND role = 'teacher'";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $teacher = $result->fetch_assoc();
+    $name = $teacher['first_name'];
+} else {
+    // Handle case where user is not found
+    $name = 'User';
+}
+
+$stmt->close();
+
+// Capture the original page URL
+$originalPage = $_SERVER['REQUEST_URI'];
+
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +67,7 @@ if ($_SESSION["user_role"] != "teacher") {
                     <span class="navbar-toggler-icon "></span>
                 </button>
                 <div class="navbar-collapse navbar p-0 d-flex justify-content-end align-items-center">
-                    <span>Welcome back Admin <b><?php echo ('first_name'); ?></b>!</span>
+                    <span>Welcome back Teacher <b><?php echo htmlspecialchars($name); ?></b>!</span>
                     <a href="#" class="las la-user-circle ps-2"></a>
                 </div>
             </nav>

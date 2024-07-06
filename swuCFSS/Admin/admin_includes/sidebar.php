@@ -91,10 +91,10 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     echo 'true';
                 else
                     echo 'false'; ?>">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon-svg me-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="icon-svg me-1">
                         <!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
                         <path
-                            d="M0 416c0 17.7 14.3 32 32 32l54.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 448c17.7 0 32-14.3 32-32s-14.3-32-32-32l-246.7 0c-12.3-28.3-40.5-48-73.3-48s-61 19.7-73.3 48L32 384c-17.7 0-32 14.3-32 32zm128 0a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zM320 256a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm32-80c-32.8 0-61 19.7-73.3 48L32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l246.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48l54.7 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-54.7 0c-12.3-28.3-40.5-48-73.3-48zM192 128a32 32 0 1 1 0-64 32 32 0 1 1 0 64zm73.3-64C253 35.7 224.8 16 192 16s-61 19.7-73.3 48L32 64C14.3 64 0 78.3 0 96s14.3 32 32 32l86.7 0c12.3 28.3 40.5 48 73.3 48s61-19.7 73.3-48L480 128c17.7 0 32-14.3 32-32s-14.3-32-32-32L265.3 64z" />
+                            d="M224 0a128 128 0 1 1 0 256A128 128 0 1 1 224 0zM178.3 304h91.4c20.6 0 40.4 3.5 58.8 9.9C323 331 320 349.1 320 368c0 59.5 29.5 112.1 74.8 144H29.7C13.3 512 0 498.7 0 482.3C0 383.8 79.8 304 178.3 304zM352 368a144 144 0 1 1 288 0 144 144 0 1 1 -288 0zm144-80c-8.8 0-16 7.2-16 16v64c0 8.8 7.2 16 16 16h48c8.8 0 16-7.2 16-16s-7.2-16-16-16H512V304c0-8.8-7.2-16-16-16z" />
                     </svg>
                     Timetable Generation
                 </a>
@@ -128,21 +128,23 @@ $current_page = basename($_SERVER['PHP_SELF']);
         </ul>
         <ul class="sidebar-nav mt-auto">
             <li class="sidebar-item">
-                <a href="#" class="sidebar-link" data-bs-toggle="collapse" data-bs-target="#profile"
-                    aria-expanded="<?php if ($current_page == 'admin_security.php' || $current_page == 'admin_profile.php') echo 'true'; else echo 'false'; ?>">
+                <a href="#" class="sidebar-link" data-bs-toggle="collapse" data-bs-target="#profile" aria-expanded="<?php if ($current_page == 'admin_security.php' || $current_page == 'admin_profile.php')
+                    echo 'true';
+                else
+                    echo 'false'; ?>">
 
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon-svg me-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon-svg me-1 mb-1">
                         <!--!Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
                         <path
                             d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z" />
                     </svg>
-                    Profile
+                    Account
                 </a>
-                <ul id="profile"
-                    class="sidebar-dropdown list-unstyled collapse <?php if ($current_page == 'admin_profile.php') echo 'show'; ?>">
+                <ul id="profile" class="sidebar-dropdown list-unstyled collapse <?php if ($current_page == 'admin_profile.php')
+                    echo 'show'; ?>">
                     <li class="sidebar-item">
-                        <a href="../Features/admin_profile.php"
-                            class="sidebar-link sidebar-link-child <?php if ($current_page == 'admin_profile.php') echo 'active'; ?>">Account</a>
+                        <a href="../Features/admin_profile.php" class="sidebar-link sidebar-link-child <?php if ($current_page == 'admin_profile.php')
+                            echo 'active'; ?>">Profile</a>
                     </li>
                 </ul>
             </li>
@@ -163,24 +165,24 @@ $current_page = basename($_SERVER['PHP_SELF']);
     </div>
 </aside>
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    var sidebarItems = document.querySelectorAll('.sidebar-item');
+    document.addEventListener("DOMContentLoaded", function () {
+        var sidebarItems = document.querySelectorAll('.sidebar-item');
 
-    sidebarItems.forEach(function(item) {
-        var collapseTrigger = item.querySelector('.sidebar-link[data-bs-toggle="collapse"]');
-        if (collapseTrigger) {
-            collapseTrigger.addEventListener('click', function() {
-                var target = document.querySelector(this.getAttribute('data-bs-target'));
-                if (!target.classList.contains('show')) {
-                    var openSections = document.querySelectorAll('.sidebar-dropdown.show');
-                    openSections.forEach(function(section) {
-                        if (section !== target) {
-                            section.classList.remove('show');
-                        }
-                    });
-                }
-            });
-        }
+        sidebarItems.forEach(function (item) {
+            var collapseTrigger = item.querySelector('.sidebar-link[data-bs-toggle="collapse"]');
+            if (collapseTrigger) {
+                collapseTrigger.addEventListener('click', function () {
+                    var target = document.querySelector(this.getAttribute('data-bs-target'));
+                    if (!target.classList.contains('show')) {
+                        var openSections = document.querySelectorAll('.sidebar-dropdown.show');
+                        openSections.forEach(function (section) {
+                            if (section !== target) {
+                                section.classList.remove('show');
+                            }
+                        });
+                    }
+                });
+            }
+        });
     });
-});
 </script>

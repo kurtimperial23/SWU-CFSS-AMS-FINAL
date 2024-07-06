@@ -1,15 +1,41 @@
 <?php
 include_once '../../common_includes/cdn.php';
+include_once '../../common_processes/db_connection.php';
 $current_page = basename($_SERVER['PHP_SELF']);
 
-// Start session
-session_start();
+// Start session if not already started
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Check if user is logged in
 if (!isset($_SESSION["email"])) {
     // Redirect back to the login page with an error message
     header("Location: ../../../index.php");
     exit();
+}
+
+// Fetch the user's email from the session
+$email = $_SESSION["email"];
+
+// Fetch the user's name from the database
+$sql = "SELECT first_name FROM tbl_users WHERE email = ?";
+$stmt = $conn->prepare($sql);
+if ($stmt) {
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+        $name = $user['first_name'];
+    } else {
+        // Handle case where user is not found
+        $name = 'User';
+    }
+    $stmt->close();
+} else {
+    // Handle SQL preparation error
+    $name = 'User';
 }
 
 // Check if user has access to this page
@@ -23,74 +49,73 @@ if ($_SESSION["user_role"] != "superAdmin") {
 <!DOCTYPE html>
 <html lang="en">
 
-<link rel="stylesheet" href="../../Styles/styles.css">
-<script src="../../Scripts/script.js"></script>
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Information Form</title>
+    <link rel="stylesheet" href="../../Styles/styles.css">
+    <script src="../../Scripts/script.js"></script>
     <style>
-        .form-container {
-            width: 40%;
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif
-        }
+    .form-container {
+        width: 40%;
+        margin: 20px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif
+    }
 
-        form label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold
-        }
+    form label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold
+    }
 
-        form .input-row {
-            display: flex;
-            margin-bottom: 15px
-        }
+    form .input-row {
+        display: flex;
+        margin-bottom: 15px
+    }
 
-        form .input-row>div {
-            flex: 1;
-            margin-right: 5px
-        }
+    form .input-row>div {
+        flex: 1;
+        margin-right: 5px
+    }
 
-        form .input-row>div:last-child {
-            margin-right: 0
-        }
+    form .input-row>div:last-child {
+        margin-right: 0
+    }
 
-        form .input-row input,
-        form .input-row select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 16px
-        }
+    form .input-row input,
+    form .input-row select {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 16px
+    }
 
-        form input[type="submit"] {
-            width: auto;
-            padding: 10px 20px;
-            background-color: #0d6efd;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px
-        }
+    form input[type="submit"] {
+        width: auto;
+        padding: 10px 20px;
+        background-color: #0d6efd;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px
+    }
 
-        form input[type="submit"]:hover {
-            background-color: #45a049
-        }
+    form input[type="submit"]:hover {
+        background-color: #45a049
+    }
 
-        .alert {
-            position: absolute;
-            display: block;
-            right: 10
-        }
+    .alert {
+        position: absolute;
+        display: block;
+        right: 10
+    }
     </style>
 </head>
 
@@ -140,11 +165,10 @@ if ($_SESSION["user_role"] != "superAdmin") {
                     <span class="navbar-toggler-icon "></span>
                 </button>
                 <div class="navbar-collapse navbar p-0 d-flex justify-content-end align-items-center">
-                    <span>Welcome back <b>Super Admin</b>!</span>
+                    <span>Welcome back Admin <b><?php echo htmlspecialchars($name); ?></b>!</span>
                     <a href="#" class="las la-user-circle ps-2"></a>
                 </div>
             </nav>
-
 
             <main class="content px-3 py-4">
                 <?php include ('../../Admin/modals/logoutModal.php');
@@ -156,7 +180,7 @@ if ($_SESSION["user_role"] != "superAdmin") {
                                     <strong>Success!</strong> Admin added successfully.
                                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>';
-                    } elseif ($alert === 'failure') {
+                    } elseif ($alert === 'error') {
                         echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
                                     <strong>Error!</strong> Error occurred while adding admin.
                                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -207,7 +231,5 @@ if ($_SESSION["user_role"] != "superAdmin") {
             </main>
         </div>
 </body>
-
-</script>
 
 </html>
