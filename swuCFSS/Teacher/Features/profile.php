@@ -74,19 +74,42 @@ $originalPage = $_SERVER['REQUEST_URI'];
 
             <main class="content px-3 py-4">
                 <!-- Modal -->
-                <?php include ('../../Admin/modals/logoutModal.php'); ?>
+                <?php include ('../../Admin/modals/logoutModal.php');
+                // Display alerts based on URL parameter
+                if (isset($_GET['alert'])) {
+                    $alert = $_GET['alert'];
+                    if ($alert === 'success') {
+                        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>Success!</strong> Password changed successfully.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>';
+                    } elseif ($alert === 'error') {
+                        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Error!</strong> Password change unsuccessful.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>';
+                    } elseif ($alert === 'duplicate') {
+                        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Error!</strong> current password is incorrect.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>';
+                    }
+                }
+                ?>
                 <!-- ENDS HERE -->
                 <div class="row h-90">
                     <div class="col-9">
                         <div class="card border-0 h-100">
+                            <div class="card-header">
+                                <h3 class="mb-0"><b>User Profile</b></h3>
+                            </div>
                             <div class="card-body">
-                                <h3 class="mb-4">Profile</h3>
                                 <form action="submit_profile.php" method="post">
                                     <div class="form-group row mb-3">
                                         <label for="fullname" class="col-sm-2 col-form-label">Full Name:</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="fullname" name="fullname"
-                                                required>
+                                        <div class="col-sm-10" aria-disabled="">
+                                            <input type="text" disabled class="form-control" id="fullname"
+                                                name="fullname" required>
                                         </div>
                                     </div>
                                     <div class="form-group row mb-4">
@@ -106,7 +129,8 @@ $originalPage = $_SERVER['REQUEST_URI'];
                                     <div class="form-group row mb-4">
                                         <label for="email" class="col-sm-2 col-form-label">Email:</label>
                                         <div class="col-sm-10">
-                                            <input type="email" class="form-control" id="email" name="email" required>
+                                            <input type="email" disabled class="form-control" id="email" name="email"
+                                                required>
                                         </div>
                                     </div>
                                     <div class="form-group row mb-4">
@@ -124,7 +148,7 @@ $originalPage = $_SERVER['REQUEST_URI'];
                                         </div>
                                     </div>
                                     <hr> <!-- Horizontal line to separate sections -->
-                                    <h3 class="mb-4">Address</h3>
+
                                     <div class="form-group row mb-4">
                                         <label for="address" class="col-sm-2 col-form-label">Address:</label>
                                         <div class="col-sm-10">
@@ -143,7 +167,7 @@ $originalPage = $_SERVER['REQUEST_URI'];
                                         </div>
                                     </div>
                                     <hr> <!-- Horizontal line to separate sections -->
-                                    <h3 class="mb-4">Others</h3>
+
                                     <div class="form-group row mb-4">
                                         <label for="profile_image" class="col-sm-2 col-form-label">Profile
                                             Image:</label>
@@ -152,13 +176,16 @@ $originalPage = $_SERVER['REQUEST_URI'];
                                                 name="profile_image" accept="image/*" required>
                                         </div>
                                     </div>
-                                    <div class="form-group row mb-4">
-                                        <div class="text-end">
-                                            <button type="submit" class="btn btn-primary">Save Profile</button>
-                                        </div>
-                                    </div>
-                                </form>
                             </div>
+                            <div class="card-footer">
+                                <div class="form-group row">
+                                    <div class="text-end">
+                                        <button class="btn btn-white">Cancel</button>
+                                        <button type="submit" class="btn btn-primary">Save Profile</button>
+                                    </div>
+                                </div>
+                            </div>
+                            </form>
                         </div>
                     </div>
                     <div class="col-3">
@@ -171,14 +198,113 @@ $originalPage = $_SERVER['REQUEST_URI'];
                                 <h4 class="card-title">Jules Mark Abgao</h4>
                                 <!-- Status -->
                                 <p class="card-text">Status: <span class="text-danger">Overload</span></p>
+                                <hr class="my-4">
+
+                                <div class="d-grid gap-2 d-md-block">
+                                    <button class="btn btn-primary btn-sm btn-md btn-lg">Edit Profile</button>
+                                    <button class="btn btn-primary btn-sm btn-md btn-lg" data-bs-toggle="modal"
+                                        data-bs-target="#changePasswordModal">Change Password</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </main>
         </div>
-        </main>
     </div>
+
+    <!-- Change Password Modal -->
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
+                </div>
+                <div class="modal-body">
+                    <form
+                        action="../../common_processes/change_password.php?redirect=<?php echo urlencode($originalPage); ?>"
+                        method="post">
+                        <div class="mb-3">
+                            <label for="currentPassword" class="form-label">Current Password</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="currentPassword" name="currentPassword"
+                                    required>
+                                <button class="btn btn-outline-secondary me-1" type="button" id="toggleCurrentPassword">
+                                    <i class="fas fa-eye-slash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label">New Password</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="newPassword" name="newPassword"
+                                    required>
+                                <button class="btn btn-outline-secondary me-1" type="button" id="toggleNewPassword">
+                                    <i class="fas fa-eye-slash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                                    required>
+                                <button class="btn btn-outline-secondary me-1" type="button" id="toggleConfirmPassword">
+                                    <i class="fas fa-eye-slash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" id="changePasswordButton" class="btn btn-primary ms-2">Change
+                                Password</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <script>
+    // Password visibility toggle
+    (function() {
+        "use strict";
+
+        const togglePasswordVisibility = (toggleButtonId, passwordInputId) => {
+            const toggleButton = document.getElementById(toggleButtonId);
+            const passwordInput = document.getElementById(passwordInputId);
+
+            toggleButton.addEventListener("click", function() {
+                const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+                passwordInput.setAttribute("type", type);
+                toggleButton.innerHTML = type === "password" ? '<i class="fas fa-eye-slash"></i>' :
+                    '<i class="fas fa-eye"></i>';
+            });
+        };
+
+        togglePasswordVisibility("toggleCurrentPassword", "currentPassword");
+        togglePasswordVisibility("toggleNewPassword", "newPassword");
+        togglePasswordVisibility("toggleConfirmPassword", "confirmPassword");
+
+        // Password match validation
+        const newPassword = document.getElementById('newPassword');
+        const confirmPassword = document.getElementById('confirmPassword');
+        const changePasswordButton = document.getElementById('changePasswordButton');
+
+        const validatePasswords = () => {
+            if (newPassword.value && confirmPassword.value && newPassword.value === confirmPassword.value) {
+                changePasswordButton.removeAttribute('disabled');
+            } else {
+                changePasswordButton.setAttribute('disabled', true);
+            }
+        };
+
+        newPassword.addEventListener('input', validatePasswords);
+        confirmPassword.addEventListener('input', validatePasswords);
+    })();
+    </script>
+
 </body>
 
 </html>

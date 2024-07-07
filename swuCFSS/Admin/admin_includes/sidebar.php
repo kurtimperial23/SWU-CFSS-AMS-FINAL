@@ -165,24 +165,24 @@ $current_page = basename($_SERVER['PHP_SELF']);
     </div>
 </aside>
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var sidebarItems = document.querySelectorAll('.sidebar-item');
+document.addEventListener("DOMContentLoaded", function() {
+    var sidebarItems = document.querySelectorAll('.sidebar-item');
 
-        sidebarItems.forEach(function (item) {
-            var collapseTrigger = item.querySelector('.sidebar-link[data-bs-toggle="collapse"]');
-            if (collapseTrigger) {
-                collapseTrigger.addEventListener('click', function () {
-                    var target = document.querySelector(this.getAttribute('data-bs-target'));
-                    if (!target.classList.contains('show')) {
-                        var openSections = document.querySelectorAll('.sidebar-dropdown.show');
-                        openSections.forEach(function (section) {
-                            if (section !== target) {
-                                section.classList.remove('show');
-                            }
-                        });
-                    }
-                });
-            }
-        });
+    sidebarItems.forEach(function(item) {
+        var collapseTrigger = item.querySelector('.sidebar-link[data-bs-toggle="collapse"]');
+        if (collapseTrigger) {
+            collapseTrigger.addEventListener('click', function() {
+                var target = document.querySelector(this.getAttribute('data-bs-target'));
+                if (!target.classList.contains('show')) {
+                    var openSections = document.querySelectorAll('.sidebar-dropdown.show');
+                    openSections.forEach(function(section) {
+                        if (section !== target) {
+                            section.classList.remove('show');
+                        }
+                    });
+                }
+            });
+        }
     });
+});
 </script>
