@@ -96,6 +96,28 @@ $originalPage = $_SERVER['REQUEST_URI'];
                                 </div>';
                     }
                 } ?>
+                <?php include ('../../Admin/modals/logoutModal.php');
+                // Display alerts based on URL parameter
+                if (isset($_GET['alert'])) {
+                    $alert = $_GET['alert'];
+                    if ($alert === 'success') {
+                        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <strong>Success!</strong> Password changed successfully.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>';
+                    } elseif ($alert === 'error') {
+                        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Error!</strong> Password change unsuccessful.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>';
+                    } elseif ($alert === 'duplicate') {
+                        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <strong>Error!</strong> current password is incorrect.
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>';
+                    }
+                }
+                ?>
                 <!-- ENDS HERE -->
                 <div class="row h-90">
                     <div class="col-9">
@@ -186,6 +208,7 @@ $originalPage = $_SERVER['REQUEST_URI'];
                                 </div>
                             </div>
                             </form>
+                            </form>
                         </div>
                     </div>
                     <div class="col-3">
@@ -205,11 +228,72 @@ $originalPage = $_SERVER['REQUEST_URI'];
                                     <button class="btn btn-primary btn-sm btn-md btn-lg" data-bs-toggle="modal"
                                         data-bs-target="#changePasswordModal">Change Password</button>
                                 </div>
+                                <hr class="my-4">
+
+                                <div class="d-grid gap-2 d-md-block">
+                                    <button class="btn btn-primary btn-sm btn-md btn-lg">Edit Profile</button>
+                                    <button class="btn btn-primary btn-sm btn-md btn-lg" data-bs-toggle="modal"
+                                        data-bs-target="#changePasswordModal">Change Password</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </main>
+            </main>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
+                </div>
+                <div class="modal-body">
+                    <form
+                        action="../../common_processes/change_password.php?redirect=<?php echo urlencode($originalPage); ?>"
+                        method="post">
+                        <div class="mb-3">
+                            <label for="currentPassword" class="form-label">Current Password</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="currentPassword" name="currentPassword"
+                                    required>
+                                <button class="btn btn-outline-secondary me-1" type="button" id="toggleCurrentPassword">
+                                    <i class="fas fa-eye-slash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label">New Password</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="newPassword" name="newPassword"
+                                    required>
+                                <button class="btn btn-outline-secondary me-1" type="button" id="toggleNewPassword">
+                                    <i class="fas fa-eye-slash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                                    required>
+                                <button class="btn btn-outline-secondary me-1" type="button" id="toggleConfirmPassword">
+                                    <i class="fas fa-eye-slash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" id="changePasswordButton" class="btn btn-primary ms-2">Change
+                                Password</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -270,7 +354,6 @@ $originalPage = $_SERVER['REQUEST_URI'];
     // Password visibility toggle
     (function() {
         "use strict";
-
         const togglePasswordVisibility = (toggleButtonId, passwordInputId) => {
             const toggleButton = document.getElementById(toggleButtonId);
             const passwordInput = document.getElementById(passwordInputId);
