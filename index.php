@@ -27,8 +27,8 @@
             <div class="row d-flex justify-content-center text-align-center login">
                 <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4 frame">
                     <div class="login-frame">
-                        <form action="./swuCFSS/common_processes/login_process.php" method="post" class="needs-validation"
-                            novalidate>
+                        <form action="./swuCFSS/common_processes/login_process.php" method="post"
+                            class="needs-validation" novalidate>
                             <div class="row flex-column text-center align-items-center">
                                 <div class="col-4">
                                     <img src="./swuCFSS/Resources/swuphinmared.png" class="logoswu img-fluid"
@@ -52,12 +52,13 @@
                                     </div>
                                     <!-- if i remove this, the form control wont work. hence, this. -->
                                     <input type="hidden"
-                                        class="form-control <?php if(isset($_GET['error']) && $_GET['error'] == 'invalid_credentials') echo 'is-invalid'; ?>"
+                                        class="form-control <?php if (isset($_GET['error']) && $_GET['error'] == 'invalid_credentials')
+                                            echo 'is-invalid'; ?>"
                                         placeholder="Username" required />
                                     <?php
-                                        if (isset($_GET['error']) && $_GET['error'] == 'invalid_credentials') {
-                                            echo "<div class='invalid-feedback'>Login failed. Please check your username and password and try again.</div>";
-                                        }
+                                    if (isset($_GET['error']) && $_GET['error'] == 'invalid_credentials') {
+                                        echo "<div class='invalid-feedback'>Login failed. Please check your username and password and try again.</div>";
+                                    }
                                     ?>
                                 </div>
                                 <div class="col">
@@ -78,24 +79,24 @@
     </section>
 
     <script>
-    //toggle password
-    (() => {
-        "use strict";
+        //toggle password
+        (() => {
+            "use strict";
 
-        // Password visibility toggle
-        const togglePassword = document.getElementById("togglePassword");
-        const passwordInput = document.getElementById("pass");
+            // Password visibility toggle
+            const togglePassword = document.getElementById("togglePassword");
+            const passwordInput = document.getElementById("pass");
 
-        togglePassword.addEventListener("click", function() {
-            const type =
-                passwordInput.getAttribute("type") === "password" ? "text" : "password";
-            passwordInput.setAttribute("type", type);
-            togglePassword.innerHTML =
-                type === "password" ?
-                '<i class="fas fa-eye-slash"></i>' :
-                '<i class="fas fa-eye"></i>';
-        });
-    })();
+            togglePassword.addEventListener("click", function () {
+                const type =
+                    passwordInput.getAttribute("type") === "password" ? "text" : "password";
+                passwordInput.setAttribute("type", type);
+                togglePassword.innerHTML =
+                    type === "password" ?
+                        '<i class="fas fa-eye-slash"></i>' :
+                        '<i class="fas fa-eye"></i>';
+            });
+        })();
     </script>
 
 </body>

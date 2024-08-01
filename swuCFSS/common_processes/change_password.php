@@ -83,4 +83,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         redirectTo($redirectUrl, "error");
     }
 }
-?>

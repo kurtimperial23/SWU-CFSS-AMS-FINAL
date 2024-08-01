@@ -1,20 +1,26 @@
-<?php require_once ('../../common_includes/cdn.php');
-
-// start session
+<?php
+require_once ('../../common_includes/cdn.php');
 session_start();
 
-// check if user is logged in
 if (!isset($_SESSION["email"])) {
-    // Redirect back to the login page with an error message
     header("Location: ../../index.php");
     exit();
 }
 
-// check if user has access to this page
 if ($_SESSION["user_role"] != "admin") {
-    // Redirect back to the login page with an error message
     header("Location: ../../common_processes/authorization_error.php");
     exit();
+}
+
+$csvAsArray = [];
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_FILES['curriculumFile']) && $_FILES['curriculumFile']['error'] === UPLOAD_ERR_OK) {
+        $tmpName = $_FILES['curriculumFile']['tmp_name'];
+        $csvAsArray = array_map('str_getcsv', file($tmpName));
+    } else {
+        echo "Error uploading file.";
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -38,7 +44,6 @@ if ($_SESSION["user_role"] != "admin") {
             <main class="content px-3 py-4">
                 <div class="container-fluid">
                     <?php include '../../Admin/admin_includes/dashboardBanner.php'; ?>
-                    <!-- SAME ROW OF DASHBOARD BANNER BUT LIKE I JUST PUT IT HERE KAY FOR EVERY PAGE LAHE LAHE -->
                     <div class="col-12 col-md-2 d-flex">
                         <div class="card flex-fill border-0">
                             <div class="card-body d-flex justify-content-center align-items-center">
@@ -60,8 +65,7 @@ if ($_SESSION["user_role"] != "admin") {
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
-                            <form action="../admin_processes/upload_curriculum.php" method="post"
-                                enctype="multipart/form-data">
+                            <form action="" method="post" enctype="multipart/form-data">
                                 <div class="modal-body">
                                     <div class="mb-3">
                                         <label for="curriculumFile" class="form-label">Choose CSV file</label>
@@ -79,7 +83,7 @@ if ($_SESSION["user_role"] != "admin") {
                     </div>
                 </div>
 
-                <!-- ENDS HERE -->
+                <!-- Curriculum Table -->
                 <div class="card border-0">
                     <div class="card-header">
                         <div class="row align-items-center">
@@ -91,73 +95,45 @@ if ($_SESSION["user_role"] != "admin") {
                                     class="form-select form-select-sm">
                                     <option value="Semester 1">Semester 1</option>
                                     <option value="Semester 2">Semester 2</option>
-                                    <option value="Semester 2">Display all</option>
+                                    <option value="All">Display all</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="card-body">
-                        <table id="myTable" class="table table-hover" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>Department</th>
-                                    <th>Program</th>
-                                    <th>Year level</th>
-                                    <th>Term</th>
-                                    <th>Service college</th>
-                                    <th>Subject code</th>
-                                    <th>Subject description</th>
-                                    <th>Units lec</th>
-                                    <th>Units lab</th>
-                                    <th>Total units</th>
-                                    <th>Total hours</th>
-                                    <th>CS lec</th>
-                                    <th>CS lab</th>
-                                    <th>Projected students</th>
-                                    <th>Lec section</th>
-                                    <th>Lab section</th>
-                                    <th>Lec hours</th>
-                                    <th>Lab hours</th>
-                                    <th>Total</th>
-                                    <th>Lecture</th>
-                                    <th>Labs</th>
-                                    <th>Options</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="text-center"><a class="fa-solid fa-trash"></a> | <a
-                                            class="fa-solid fa-pen-to-square"></a>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <?php if (!empty($csvAsArray)) { ?>
+                            <table id="myTable" class="table table-hover" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <?php
+                                        // Display headers
+                                        $header = array_shift($csvAsArray);
+                                        foreach ($header as $col) {
+                                            echo "<th>" . htmlspecialchars($col) . "</th>";
+                                        }
+                                        ?>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    // Display data rows
+                                    foreach ($csvAsArray as $row) {
+                                        echo "<tr>";
+                                        foreach ($row as $cell) {
+                                            echo "<td>" . htmlspecialchars($cell) . "</td>";
+                                        }
+                                        echo "</tr>";
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                        <?php } else { ?>
+                            <p>No curriculum data available. Please upload a CSV file.</p>
+                        <?php } ?>
                     </div>
                 </div>
+            </main>
         </div>
-        </main>
-    </div>
     </div>
 </body>
 <script src="../../Scripts/script.js"></script>

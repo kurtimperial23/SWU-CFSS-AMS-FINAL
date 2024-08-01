@@ -38,27 +38,30 @@ if ($_SESSION["user_role"] != "admin") {
             <main class="content px-3 py-4">
                 <div class="container-fluid">
                     <?php include '../../Admin/admin_includes/dashboardBanner.php'; ?>
-                    <div class="col-12 col-md-2 d-flex">
-                        <div class="card flex-fill border-0 dashboard-dropdown">
-                            <!-- dropdown button -->
-                            <h6 class="pt-2 ps-2 ">Set Active School Year</h6>
-                            <div class="btn-group dropdown-center px-2">
-                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle"
-                                    data-bs-toggle="dropdown" id="schoolYearDropdown" aria-expanded="false">
-                                    Set Active School Year
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="schoolYearSelectConfirmationLabel">
-                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#schoolYearSelectConfirmation"
-                                            data-school-year="2023-2024">2023-2024</a></li>
-                                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#schoolYearSelectConfirmation"
-                                            data-school-year="2024-2025">2024-2025</a></li>
-                                </ul>
+                    <div class="row">
+                        <div class="col-12 col-md-6 col-lg-4 d-flex">
+                            <div class="card flex-fill border-0 dashboard-dropdown">
+                                <!-- dropdown button -->
+                                <h6 class="pt-2 ps-2">Set Active School Year</h6>
+                                <div class="btn-group dropdown-center px-2">
+                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle"
+                                        data-bs-toggle="dropdown" id="schoolYearDropdown" aria-expanded="false">
+                                        Set Active School Year
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="schoolYearSelectConfirmationLabel">
+                                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                data-bs-target="#schoolYearSelectConfirmation"
+                                                data-school-year="2023-2024">2023-2024</a></li>
+                                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                                data-bs-target="#schoolYearSelectConfirmation"
+                                                data-school-year="2024-2025">2024-2025</a></li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <!-- modals -->
                 <div class="modal fade" id="schoolYearSelectConfirmation" tabindex="-1" role="dialog"
                     aria-labelledby="schoolYearSelectConfirmationLabel" aria-hidden="true">

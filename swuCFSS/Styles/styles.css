@@ -21,7 +21,10 @@ input[type="number"]::-webkit-outer-spin-button {
 
 input[type="number"] {
   -moz-appearance: textfield; /* Firefox */
+  -webkit-appearance: none;   /* Chrome, Safari, and Edge */
+  appearance: none;           /* Standard */
 }
+
 
 *,
 ::after,
@@ -216,6 +219,11 @@ h4 {
 
 /* SIDEBAR CSS */
 
+.content {
+  max-width: auto !important;
+  width: auto !important;
+}
+
 .sidebar-logo {
   padding: 1.15rem;
 }
@@ -364,13 +372,6 @@ nav {
 
 .sidebar-background {
   background-color: var(--color-sub);
-}
-
-@media (min-width: 768px) {
-  .content {
-    max-width: auto;
-    width: auto;
-  }
 }
 
 .card {
@@ -525,10 +526,12 @@ table th {
 
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) {
+
 }
 
 /* Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) {
+ 
 }
 
 /* Large devices (desktops, 992px and up) */
