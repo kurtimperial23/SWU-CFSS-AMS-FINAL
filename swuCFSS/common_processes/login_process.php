@@ -28,7 +28,7 @@ if ($stmt) {
     if (mysqli_num_rows($result) > 0) {
         // Fetch the user row
         $row = mysqli_fetch_assoc($result);
-        
+
         // Verify the hashed password
         if (password_verify($password, $row['password'])) {
             // Password is correct
@@ -53,6 +53,9 @@ if ($stmt) {
                     break;
                 case 'teacher':
                     header("Location: ../Teacher/Features/teacher.php");
+                    break;
+                case 'amsAdmin':
+                    header("Location: ../../swushsams/Admin/dashboard.php");
                     break;
                 default:
                     // Redirect back to the login page with an error message
