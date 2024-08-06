@@ -231,6 +231,17 @@ VALUES (
         'admin',
         '12123123',
         1
+    ),
+    (
+        33,
+        '',
+        'lemuel',
+        'gabutero',
+        'gabuterolemuel@gmail.com',
+        '$2y$10$i.Xqq60uFeKQmlzdbPXygOcOgFLkdld/ZbzooWKEDphwaZbB/BqiS',
+        'amsAdmin',
+        '12321312312',
+        1
     );
 
 --
