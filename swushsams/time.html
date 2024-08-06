@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendar Example</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+</head>
+<body>
+
+<p id="calendar"></p>
+
+<script>
+// Function to update the calendar representation of the current date
+function updateCalendar() {
+    var calendarElement = document.getElementById("calendar");
+    if (calendarElement) {
+        calendarElement.textContent = moment().calendar();
+    }
+}
+
+// Call the function initially to set the initial content
+updateCalendar();
+
+// Update the calendar every second
+setInterval(updateCalendar, 1000);
+</script>
+
+</body>
+</html>
